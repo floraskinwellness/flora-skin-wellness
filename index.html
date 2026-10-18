@@ -77,9 +77,8 @@ header{position:sticky;top:0;z-index:50;background:rgba(251,251,250,.94);backdro
 .hero p{color:#555;font-size:15px;margin-bottom:34px}
 .hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
 .hero > *,.about > *{min-width:0}
-.hero-video{position:relative;aspect-ratio:4/5;max-height:72vh;width:100%;background:var(--mist);overflow:hidden}
-.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s}
-.hero-video.ready video{opacity:1}
+.hero-video{position:relative;aspect-ratio:4/5;max-height:72vh;width:100%;background:var(--mist) url("images/hero.jpg") center/cover no-repeat;overflow:hidden}
+.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero-video::after{content:"Hero video";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#b5b5b5;white-space:nowrap}
 .hero-video.ready::after{display:none}
 .facts{display:flex;gap:10px 28px;flex-wrap:wrap;margin-top:38px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
@@ -201,7 +200,7 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
     <div class="facts"><span>Facials</span><span>Brows</span><span>Mon – Wed + Select Thu</span></div>
   </div>
   <div class="hero-video">
-    <video autoplay muted loop playsinline preload="auto" poster="images/hero.jpg" aria-hidden="true">
+    <video autoplay muted loop playsinline disablepictureinpicture preload="auto" poster="images/hero.jpg" aria-hidden="true">
       <source src="images/hero.mp4" type="video/mp4">
     </video>
   </div>
@@ -404,17 +403,22 @@ const setLinks = (sel, url) => document.querySelectorAll(sel).forEach(a => {
 setLinks("[data-book]", BOOKING_URL);
 setLinks("[data-ig]", INSTAGRAM_URL);
 
-/* Hero video: fade in once it can play; pause for visitors who prefer reduced motion */
+/* Hero video: make sure it starts. Some desktop browsers block or delay
+   autoplay, so keep nudging it until it plays (on load, when the tab
+   becomes visible, and on the visitor's first click, scroll or key press). */
 const heroVid = document.querySelector(".hero-video video");
 if (heroVid) {
-  const ready = () => heroVid.parentElement.classList.add("ready");
-  heroVid.addEventListener("loadeddata", ready);
+  const box = heroVid.parentElement;
+  const ready = () => box.classList.add("ready");
+  heroVid.muted = true; heroVid.defaultMuted = true; heroVid.playsInline = true;
+  const tryPlay = () => { if (heroVid.paused) heroVid.play().catch(() => {}); };
+  ["loadeddata", "canplay"].forEach(ev => heroVid.addEventListener(ev, () => { ready(); tryPlay(); }));
   if (heroVid.readyState >= 2) ready();
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    heroVid.removeAttribute("autoplay"); heroVid.pause();
-  } else {
-    heroVid.play().catch(() => {});
-  }
+  const still = new Image(); still.onload = ready; still.src = "images/hero.jpg";
+  tryPlay();
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) tryPlay(); });
+  const kick = () => { tryPlay(); ["pointerdown", "keydown", "scroll", "touchstart"].forEach(ev => window.removeEventListener(ev, kick)); };
+  ["pointerdown", "keydown", "scroll", "touchstart"].forEach(ev => window.addEventListener(ev, kick, { passive: true }));
 }
 
 /* Photos: load if present, otherwise keep the placeholder */
