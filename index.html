@@ -63,9 +63,11 @@ p{max-width:60ch}
 .arch{border-radius:999px 999px 0 0}
 
 /* Header */
-header{position:sticky;top:0;z-index:50;background:transparent;border-bottom:1px solid transparent;transition:background .35s,border-color .35s}
+header{position:sticky;top:0;z-index:50;background:transparent;border-bottom:1px solid transparent;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .35s,background .35s,border-color .35s,visibility 0s}
 /* Transparent over the video; solid once scrolled past it */
 header.solid{background:var(--white);border-bottom-color:var(--line)}
+/* Hidden while scrolling through the video */
+header.away{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .3s,background 0s .45s,border-color 0s .45s,visibility 0s .45s}
 .nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
 .wordmark{font-family:"Beth Ellen", var(--serif);font-size:19px;font-weight:400;line-height:1.5;white-space:nowrap;padding-top:6px}
 .nav ul{list-style:none;display:flex;align-items:center;gap:34px}
@@ -475,9 +477,15 @@ document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", (
   document.getElementById(tab.dataset.panel).classList.add("active");
 }));
 
-/* Header: translucent over the video, firmer once scrolled past it */
+/* Header: transparent at the very top, hidden while scrolling through
+   the video, then solid white once you're past it */
 const hdr = document.querySelector("header"), heroEl = document.querySelector(".hero");
-const setHdr = () => hdr.classList.toggle("solid", heroEl.getBoundingClientRect().bottom <= 72);
+const setHdr = () => {
+  const atTop = window.scrollY <= 4;
+  const pastVideo = heroEl.getBoundingClientRect().bottom <= 100;
+  hdr.classList.toggle("away", !atTop && !pastVideo);
+  hdr.classList.toggle("solid", pastVideo);
+};
 window.addEventListener("scroll", setHdr, { passive: true }); window.addEventListener("resize", setHdr); setHdr();
 
 /* Mobile sticky book bar */
