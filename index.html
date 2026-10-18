@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flora Skin Wellness — Esthetician in Spokane Valley, WA</title>
+<meta name="description" content="Facials and brow services by Jules, licensed esthetician, in Spokane Valley, WA. Book online.">
+<meta property="og:title" content="Flora Skin Wellness">
+<meta property="og:description" content="Facials and brow services in Spokane Valley, WA. Book online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&family=Beth+Ellen&display=swap" rel="stylesheet">
+
+<!--
+  QUICK EDIT GUIDE
+  1. Links: BOOKING_URL and INSTAGRAM_URL in the <script> at the bottom.
+  2. Media: add an /images folder next to this file with:
+       hero.mp4     the looping hero video (silent; MP4, ideally under ~8 MB)
+       hero.jpg     optional still frame, shown while the video loads
+       portrait.jpg Jules's portrait
+     A soft placeholder shows until they exist.
+  3. Photos display in black & white (the hero video stays in full color).
+     For color photos, set --photo-filter: none; below.
+-->
+
+<style>
+:root{
+  --white:#fbfbfa; --paper:#f5f5f3; --mist:#eeeeec; --line:#e2e2df;
+  --grey:#8a8a87; --ink:#1e1e1e;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --sans:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --photo-filter: grayscale(1);
+  --max:1180px; --gutter:clamp(24px,6vw,64px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+body{overflow-x:clip;background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ink);color:var(--white)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.eyebrow{font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+em{font-style:italic}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:300;line-height:1.1}
+h2{font-size:clamp(36px,4.6vw,56px)}
+p{max-width:60ch}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:14px;font-size:11px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;padding:17px 32px;border:1px solid var(--ink);background:var(--ink);color:var(--white);transition:background .35s,color .35s}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--white)}
+.btn .arrow{width:20px;height:1px;background:currentColor;position:relative;transition:width .35s}
+.btn .arrow::after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
+.btn:hover .arrow{width:30px}
+.link{font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:400;border-bottom:1px solid currentColor;padding-bottom:3px;white-space:nowrap;transition:opacity .3s}
+.link:hover{opacity:.5}
+
+/* Photos */
+.ph{position:relative;background:var(--mist);overflow:hidden}
+.ph::before{content:"";position:absolute;inset:0;background-image:var(--img);background-size:cover;background-position:center;filter:var(--photo-filter)}
+.ph::after{content:attr(data-label);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#b5b5b5;white-space:nowrap}
+.ph.has-img::after{display:none}
+.arch{border-radius:999px 999px 0 0}
+
+/* Header */
+header{position:sticky;top:0;z-index:50;background:rgba(251,251,250,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
+.wordmark{font-family:"Beth Ellen", var(--serif);font-size:19px;font-weight:400;line-height:1.5;white-space:nowrap;padding-top:6px}
+.nav ul{list-style:none;display:flex;align-items:center;gap:34px}
+.nav ul a:not(.btn){font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:400;transition:opacity .3s}
+.nav ul a:not(.btn):hover{opacity:.45}
+.nav .btn{padding:12px 22px}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(36px,6vw,90px);align-items:center;padding-top:clamp(48px,7vw,90px);padding-bottom:clamp(48px,7vw,90px)}
+.hero h1{font-size:clamp(50px,7vw,96px);margin:18px 0 22px}
+.hero p{color:#555;font-size:15px;margin-bottom:34px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero > *,.about > *{min-width:0}
+.hero-video{position:relative;aspect-ratio:4/5;max-height:72vh;width:100%;background:var(--mist);overflow:hidden}
+.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s}
+.hero-video.ready video{opacity:1}
+.hero-video::after{content:"Hero video";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#b5b5b5;white-space:nowrap}
+.hero-video.ready::after{display:none}
+.facts{display:flex;gap:10px 28px;flex-wrap:wrap;margin-top:38px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+
+/* Sections */
+.sec{padding:clamp(64px,8vw,110px) 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{margin-top:14px}
+
+/* Service list */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tab{background:none;border:1px solid var(--line);cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);padding:12px 20px;transition:all .3s}
+.tab:hover{color:var(--ink);border-color:var(--ink)}
+.tab.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.panel{display:none}
+.panel.active{display:block}
+.svc{display:grid;grid-template-columns:1fr auto auto;gap:6px 28px;align-items:baseline;padding:24px 0;border-bottom:1px solid var(--line)}
+.svc h3{font-size:clamp(24px,2.3vw,29px)}
+.fav{display:inline-block;vertical-align:middle;margin-left:12px;transform:translateY(-3px);font-family:var(--sans);font-size:9.5px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;line-height:1;padding:6px 10px 5px;border:1px solid var(--ink);color:var(--ink);white-space:nowrap}
+.svc .meta{font-size:12px;letter-spacing:.14em;color:var(--grey);white-space:nowrap}
+.svc p{grid-column:1/-1;color:#666;font-size:13.5px;max-width:72ch}
+.svc small{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.panel-note{font-size:14px;color:#666;margin-top:20px}
+
+/* Consult */
+.consult{display:flex;justify-content:space-between;align-items:center;gap:24px 40px;flex-wrap:wrap;background:var(--paper);padding:30px clamp(24px,3vw,40px);margin-top:40px}
+.consult h3{font-size:clamp(24px,2.4vw,30px);margin-bottom:4px}
+.consult p{color:#666;font-size:13.5px}
+
+/* About */
+.about{display:grid;grid-template-columns:.75fr 1.25fr;gap:clamp(36px,7vw,100px);align-items:center}
+.about .ph{aspect-ratio:3/4}
+.about .ph::before{background-position:62% 60%}
+.about h2{margin:14px 0 22px}
+.about p{color:#555;margin-bottom:16px}
+.about .sig{font-family:var(--serif);font-style:italic;font-size:30px;margin:8px 0 4px}
+.about .creds{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);margin-bottom:30px}
+
+/* FAQ */
+.faq{max-width:820px}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:22px 0;font-family:var(--serif);font-size:clamp(20px,2vw,24px);font-weight:400}
+summary::-webkit-details-marker{display:none}
+.pm{position:relative;width:13px;height:13px;flex:none}
+.pm::before,.pm::after{content:"";position:absolute;left:0;top:50%;width:13px;height:1px;background:var(--ink);transition:transform .3s}
+.pm::after{transform:rotate(90deg)}
+details[open] .pm::after{transform:rotate(0)}
+details .ans{padding:0 0 24px;color:#555;font-size:14px;max-width:62ch}
+
+/* Footer */
+footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 30px;font-size:14px}
+.foot-cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:48px;border-bottom:1px solid #333;margin-bottom:44px}
+.foot-cta h2{font-size:clamp(34px,4.4vw,54px)}
+.foot-cta .btn{background:var(--white);color:var(--ink);border-color:var(--white)}
+.foot-cta .btn:hover{background:transparent;color:var(--white)}
+.foot{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.foot h4{font-family:var(--sans);font-weight:400;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#888;margin-bottom:14px}
+.foot ul{list-style:none}.foot li{margin-bottom:6px;color:#ddd}
+.foot a:hover{opacity:.6}
+.legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:56px;font-size:11px;letter-spacing:.12em;color:#777}
+
+.book-bar{display:none}
+
+/* Responsive */
+@media (max-width:860px){
+  .nav ul li.hide-m{display:none}
+  .nav ul{gap:0}
+  .hero{grid-template-columns:1fr}
+  .hero-video{max-width:340px;max-height:none;margin:0 auto;order:2}
+  .about{grid-template-columns:1fr}
+  .about .ph{width:100%;max-width:320px;margin:0 auto}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wordmark{font-size:13px}
+  .nav .btn{padding:10px 14px;font-size:10px;letter-spacing:.14em}
+  .nav .btn .arrow{display:none}
+  .fav{display:table;margin:10px 0 2px;transform:none}
+  .svc{grid-template-columns:1fr auto}
+  .svc .meta{grid-column:1;grid-row:2}
+  .svc .link{grid-column:2;grid-row:1/3;align-self:center}
+  .svc p{grid-row:3}
+  .tab{padding:11px 14px;letter-spacing:.18em}
+  .foot{grid-template-columns:1fr}
+  .book-bar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(251,251,250,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .4s}
+  .book-bar.show{transform:none}
+  .book-bar .btn{width:100%;justify-content:center}
+  footer{padding-bottom:100px}
+}
+</style>
+</head>
+<body id="top">
+
+<header>
+  <nav class="wrap nav" aria-label="Main">
+    <a href="#top" class="wordmark">Flora Skin Wellness</a>
+    <ul>
+      <li class="hide-m"><a href="#services">Services</a></li>
+      <li class="hide-m"><a href="#about">About</a></li>
+      <li class="hide-m"><a href="#faq">FAQ</a></li>
+      <li><a href="#" class="btn" data-book>Book Now <span class="arrow"></span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="wrap hero">
+  <div>
+    <div class="eyebrow">Esthetician &nbsp;·&nbsp; Spokane Valley, WA</div>
+    <h1>Skin, <em>seen</em> &amp; cared&nbsp;for.</h1>
+    <p>Results-driven facials and brow services by Jules, licensed esthetician. Find your service below and book in minutes.</p>
+    <div class="ctas">
+      <a href="#" class="btn" data-book>Book an Appointment <span class="arrow"></span></a>
+      <a href="#services" class="btn ghost">View Services</a>
+    </div>
+    <div class="facts"><span>Facials</span><span>Brows</span><span>Mon – Wed + Select Thu</span></div>
+  </div>
+  <div class="hero-video">
+    <video autoplay muted loop playsinline preload="auto" poster="images/hero.jpg" aria-hidden="true">
+      <source src="images/hero.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Services &amp; Pricing</div>
+        <h2>Find your <em>service</em>.</h2>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" data-panel="facials">Facials</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="brows">Brows</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="addons">Add-Ons</button>
+    </div>
+
+    <div class="panel active" id="facials" role="tabpanel">
+      <div class="svc">
+        <h3>The Timeless Facial <span class="fav">Jules' Favorite</span></h3><span class="meta">60 min · $185</span><a href="#" class="link" data-book>Book</a>
+        <p>Lifts, firms and restores. Red light, sculpting massage, gua sha and facial cupping, finished with a peptide infusion for plump, radiant skin.</p>
+      </div>
+      <div class="svc">
+        <h3>The Luminous Facial</h3><span class="meta">60 min · $170</span><a href="#" class="link" data-book>Book</a>
+        <p>Revives dull, tired skin. Customized exfoliation, lymphatic massage and deep hydration. Perfect before an event.</p>
+      </div>
+      <div class="svc">
+        <h3>The Acne Facial</h3><span class="meta">45 min · $170</span><a href="#" class="link" data-book>Book</a>
+        <p>For active breakouts. Enzyme or chemical peel, extractions, high frequency and LED to calm inflammation and support clarity.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="brows" role="tabpanel">
+      <div class="svc">
+        <h3>Brow Sculpt + Define</h3><span class="meta">75 min · $145</span><a href="#" class="link" data-book>Book</a>
+        <p>The full transformation: lamination, shaping and a custom tint. Lasts 4–8 weeks.</p>
+      </div>
+      <div class="svc">
+        <h3>Brow Lamination + Tint</h3><span class="meta">50 min · $115</span><a href="#" class="link" data-book>Book</a>
+        <p>Lifted, fuller brows with deepened color. Lasts 4–8 weeks. Shaping not included.</p>
+      </div>
+      <div class="svc">
+        <h3>Brow Lamination</h3><span class="meta">40 min · $85</span><a href="#" class="link" data-book>Book</a>
+        <p>Sleek, lifted brows that hold their shape for weeks. Shaping not included.</p>
+      </div>
+      <div class="svc">
+        <h3>Brow Wax + Tint</h3><span class="meta">40 min · $60</span><a href="#" class="link" data-book>Book</a>
+        <p>Wax shaping with tweezing and trimming, plus tint for color and dimension. Tint lasts 2–4 weeks.</p>
+      </div>
+      <div class="svc">
+        <h3>Brow Wax</h3><span class="meta">30 min · $40</span><a href="#" class="link" data-book>Book</a>
+        <p>Gentle wax shaping, tweezing and trimming for a clean, refined finish.</p>
+      </div>
+      <div class="svc">
+        <h3>Brow Tweeze</h3><span class="meta">30 min · $45</span><a href="#" class="link" data-book>Book</a>
+        <p>Precise tweezing and trimming for those who can't be waxed.</p>
+      </div>
+      <p class="panel-note">Lip and chin waxing also available.</p>
+    </div>
+
+    <div class="panel" id="addons" role="tabpanel">
+      <div class="svc">
+        <h3>Oxygen Hydration Infusion</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
+        <p>Cold oxygen infuses hyaluronic acid and peptides for an instant glass-skin glow.</p>
+      </div>
+      <div class="svc">
+        <h3>15 Min. Lymphatic Massage</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
+        <p>Depuffs, sculpts and boosts circulation.</p>
+      </div>
+      <div class="svc">
+        <h3>Botanical Scalp Treatment</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
+        <p>Scalp serum, massage and high frequency to support healthy hair. <small>Not pregnancy safe</small></p>
+      </div>
+      <div class="svc">
+        <h3>LED Light Therapy</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
+        <p>Supports collagen and calms inflammation. <small>Included in Timeless &amp; Acne Facials</small></p>
+      </div>
+      <div class="svc">
+        <h3>Dermaplaning</h3><span class="meta">$50</span><a href="#" class="link" data-book>Book</a>
+        <p>Removes peach fuzz for smooth, glowing skin. <small>Not for acne-prone skin</small></p>
+      </div>
+      <div class="svc">
+        <h3>High Frequency</h3><span class="meta">$20</span><a href="#" class="link" data-book>Book</a>
+        <p>Helps with breakouts and fine lines. <small>Included in Acne Facial · Not pregnancy safe</small></p>
+      </div>
+      <div class="svc">
+        <h3>Extractions</h3><span class="meta">$15</span><a href="#" class="link" data-book>Book</a>
+        <p>Clears blackheads and congestion. <small>Included in Acne Facial</small></p>
+      </div>
+      <p class="panel-note">Add-ons are booked together with a facial.</p>
+    </div>
+
+    <div class="consult">
+      <div>
+        <h3>Not sure where to start?</h3>
+        <p>Book a 30-minute Skin Consultation, in studio or virtual · $90</p>
+      </div>
+      <a href="#" class="btn ghost" data-book>Book a Consultation <span class="arrow"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="wrap about">
+    <div class="ph arch" data-img="images/portrait.jpg" data-label="Portrait"></div>
+    <div>
+      <div class="eyebrow">About</div>
+      <h2>Hello, I'm <em>Jules</em>.</h2>
+      <p>I grew up trying to fix my own skin: severe breakouts, dryness, eczema. That led me to esthetics school, and years of learning and testing until skin became my expertise.</p>
+      <p>At Flora, skin is seen in context, from stress and sleep to seasons and everything in between. We work together to support your skin with high-performance, results-driven, plant-forward lines, because radiant skin starts with whole-body health.</p>
+      <div class="sig">xo, Jules</div>
+      <div class="creds">Licensed Esthetician &amp; Holistic Skin Practitioner</div>
+      <a href="#" class="btn" data-book>Book With Jules <span class="arrow"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">FAQ</div>
+        <h2>Good to <em>know</em>.</h2>
+      </div>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Which facial should I book? <span class="pm"></span></summary>
+        <div class="ans">Breakouts: The Acne Facial. Dullness or a pre-event glow: The Luminous Facial. Firming and deep relaxation: The Timeless Facial. Still unsure? Book a Skin Consultation.</div>
+      </details>
+      <details>
+        <summary>How should I show up to my appointment? <span class="pm"></span></summary>
+        <div class="ans">Come as you are, with a few small touches to help you get the most from your time. A bare face is ideal, so we can begin caring for your skin right away. Wear your hair in a way that's ready for a scalp massage, as it may get a little oil in it. And dress in something cozy, so you can stay peaceful and relaxed long after your facial ends.</div>
+      </details>
+      <details>
+        <summary>What is the cancellation policy? <span class="pm"></span></summary>
+        <div class="ans">Please give at least 48 hours' notice. Changes within 48 hours, for any reason including illness, are charged 50% of the service. Day-of cancellations and no-shows are charged 100%.</div>
+      </details>
+      <details>
+        <summary>Are any services not pregnancy safe? <span class="pm"></span></summary>
+        <div class="ans">High frequency and the Botanical Scalp Treatment are not pregnancy safe. Let Jules know when booking and your facial will be adjusted.</div>
+      </details>
+      <details>
+        <summary>How do virtual consultations work? <span class="pm"></span></summary>
+        <div class="ans">After booking, Jules will text you before your appointment to connect and ask for progress photos, then share regimen recommendations tailored to you.</div>
+      </details>
+      <details>
+        <summary>How should I contact Jules with a question? <span class="pm"></span></summary>
+        <div class="ans">Jules would love to hear from you. Send her a DM on Instagram at <a href="#" data-ig style="border-bottom:1px solid currentColor">@floraskinwellness</a>, or email <a href="mailto:floraskinwellness@gmail.com" style="border-bottom:1px solid currentColor">floraskinwellness@gmail.com</a>. She'll get back to you during business hours.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-cta">
+      <h2>Ready when <em>you</em> are.</h2>
+      <a href="#" class="btn" data-book>Book Your Appointment <span class="arrow"></span></a>
+    </div>
+    <div class="foot">
+      <div>
+        <h4>Visit</h4>
+        <ul><li><a href="https://www.google.com/maps/search/?api=1&query=8921%20E%20Alki%20Ave%2C%20Spokane%20Valley%2C%20WA%2C%2099212" target="_blank" rel="noopener">8921 E Alki Ave<br>Spokane Valley, WA 99212</a></li></ul>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul><li>Mon – Wed · 9:30 – 5</li><li>Select Thursdays</li><li>Fri – Sun · Closed</li></ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul><li><a href="#" data-book>Book Online</a></li><li><a href="#" data-ig>Instagram</a></li><li><a href="mailto:floraskinwellness@gmail.com">floraskinwellness@gmail.com</a></li></ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span><span class="wordmark" style="font-size:16px;color:#ddd">Flora Skin Wellness</span> &nbsp;© <span id="yr"></span></span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="book-bar"><a href="#" class="btn" data-book>Book an Appointment <span class="arrow"></span></a></div>
+
+<script>
+/* ===== Links — edit these two lines ===== */
+const BOOKING_URL   = "https://floraskinwellness.glossgenius.com/services";
+const INSTAGRAM_URL = "https://www.instagram.com/floraskinwellness/";
+
+const setLinks = (sel, url) => document.querySelectorAll(sel).forEach(a => {
+  a.href = url; a.target = "_blank"; a.rel = "noopener";
+});
+setLinks("[data-book]", BOOKING_URL);
+setLinks("[data-ig]", INSTAGRAM_URL);
+
+/* Hero video: fade in once it can play; pause for visitors who prefer reduced motion */
+const heroVid = document.querySelector(".hero-video video");
+if (heroVid) {
+  const ready = () => heroVid.parentElement.classList.add("ready");
+  heroVid.addEventListener("loadeddata", ready);
+  if (heroVid.readyState >= 2) ready();
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    heroVid.removeAttribute("autoplay"); heroVid.pause();
+  } else {
+    heroVid.play().catch(() => {});
+  }
+}
+
+/* Photos: load if present, otherwise keep the placeholder */
+document.querySelectorAll(".ph[data-img]").forEach(el => {
+  const src = el.dataset.img, img = new Image();
+  img.onload = () => { el.style.setProperty("--img", `url("${src}")`); el.classList.add("has-img"); };
+  img.src = src;
+});
+
+/* Back to top + logo: always scroll to the very top */
+document.querySelectorAll('a[href="#top"]').forEach(a => a.addEventListener("click", e => {
+  e.preventDefault();
+  const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+}));
+
+/* Service tabs */
+document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(t => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  tab.classList.add("active"); tab.setAttribute("aria-selected", "true");
+  document.getElementById(tab.dataset.panel).classList.add("active");
+}));
+
+/* Mobile sticky book bar */
+const bar = document.querySelector(".book-bar");
+const onScroll = () => {
+  const y = window.scrollY;
+  bar.classList.toggle("show", y > window.innerHeight * 0.7 && (window.innerHeight + y) < document.body.scrollHeight - 260);
+};
+window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
