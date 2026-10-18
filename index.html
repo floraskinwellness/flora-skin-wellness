@@ -7,6 +7,10 @@
 <meta name="description" content="Facials and brow services by Jules, licensed esthetician, in Spokane Valley, WA. Book online.">
 <meta property="og:title" content="Flora Skin Wellness">
 <meta property="og:description" content="Facials and brow services in Spokane Valley, WA. Book online.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#fbfbfa">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&family=Beth+Ellen&display=swap" rel="stylesheet">
@@ -113,6 +117,23 @@ header.away{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-even
 .svc small{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
 .panel-note{font-size:14px;color:#666;margin-top:20px}
 
+/* Facial add-ons drawer */
+.addons-drawer{margin-top:28px;border:1px solid var(--line);border-top:1px solid var(--line);background:var(--white)}
+.addons-drawer summary{padding:20px 22px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;gap:16px;transition:background .3s}
+.addons-drawer summary:hover{background:var(--paper)}
+.addons-drawer .ao-label{display:flex;align-items:center;gap:12px;color:var(--ink)}
+.addons-drawer .ao-hint{margin-left:auto;color:var(--grey);letter-spacing:.16em;font-size:10.5px}
+.addons-drawer[open] summary{border-bottom:1px solid var(--line)}
+.ao-list{list-style:none;padding:6px 22px 4px;display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
+.ao-list li{padding:18px 0;border-bottom:1px solid var(--line)}
+.ao-row{display:flex;align-items:baseline;gap:12px}
+.ao-row h4{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.2}
+.ao-dots{flex:1;border-bottom:1px dotted #c9c9c6;transform:translateY(-5px)}
+.ao-price{font-size:12px;letter-spacing:.14em;white-space:nowrap}
+.ao-list p{color:#666;font-size:13px;margin-top:6px}
+.ao-list small{display:block;margin-top:4px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.addons-drawer .panel-note{padding:6px 22px 22px;margin:0}
+
 /* Consult */
 .consult{display:flex;justify-content:space-between;align-items:center;gap:24px 40px;flex-wrap:wrap;background:var(--paper);padding:30px clamp(24px,3vw,40px);margin-top:40px}
 .consult h3{font-size:clamp(24px,2.4vw,30px);margin-bottom:4px}
@@ -180,6 +201,10 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
   .svc .link{grid-column:2;grid-row:1/3;align-self:center}
   .svc p{grid-row:3}
   .tab{padding:11px 14px;letter-spacing:.18em}
+  .ao-list{grid-template-columns:1fr;padding:0 18px}
+  .addons-drawer summary{padding:18px}
+  .addons-drawer .ao-hint{display:none}
+  .addons-drawer .panel-note{padding:6px 18px 18px}
   .foot{grid-template-columns:1fr}
   .book-bar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(251,251,250,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .4s}
   .book-bar.show{transform:none}
@@ -239,88 +264,69 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
     <div class="tabs" role="tablist">
       <button class="tab active" role="tab" aria-selected="true" data-panel="facials">Facials</button>
       <button class="tab" role="tab" aria-selected="false" data-panel="brows">Brows</button>
-      <button class="tab" role="tab" aria-selected="false" data-panel="addons">Add-Ons</button>
     </div>
 
     <div class="panel active" id="facials" role="tabpanel">
       <div class="svc">
         <h3>The Timeless Facial <span class="fav">Jules' Favorite</span></h3><span class="meta">60 min · $185</span><a href="#" class="link" data-book>Book</a>
-        <p>Lifts, firms and restores. Red light, sculpting massage, gua sha and facial cupping, finished with a peptide infusion for plump, radiant skin.</p>
+        <p>A rejuvenating ritual that lifts, firms and restores your skin's natural vitality. Warm red light, sculpting massage, gua sha and facial cupping contour and awaken the complexion, finished with a peptide infusion for deeply hydrated, plumped, radiant skin.</p>
       </div>
       <div class="svc">
         <h3>The Luminous Facial</h3><span class="meta">60 min · $170</span><a href="#" class="link" data-book>Book</a>
-        <p>Revives dull, tired skin. Customized exfoliation, lymphatic massage and deep hydration. Perfect before an event.</p>
+        <p>A glow-inducing experience designed to revive dull, fatigued skin. Customized exfoliation and rhythmic lymphatic massage sculpt, brighten and energize, leaving skin soft, dewy and naturally luminous. Perfect before events or whenever your complexion needs a reset.</p>
       </div>
       <div class="svc">
         <h3>The Acne Facial</h3><span class="meta">45 min · $170</span><a href="#" class="link" data-book>Book</a>
-        <p>For active breakouts. Enzyme or chemical peel, extractions, high frequency and LED to calm inflammation and support clarity.</p>
+        <p>A clarifying treatment to support clear, balanced, resilient skin. Purifying exfoliation (an enzyme or chemical peel), acne-focused extractions, high frequency and LED light work together to soothe inflammation. Ideal for active breakouts.</p>
       </div>
+      <details class="addons-drawer">
+        <summary><span class="ao-label">Facial Add-Ons</span><span class="ao-hint">Customize any facial</span><span class="pm"></span></summary>
+        <ul class="ao-list">
+          <li><div class="ao-row"><h4>Oxygen Hydration Infusion</h4><span class="ao-dots"></span><span class="ao-price">$30</span></div><p>Pressurized cold oxygen pushes hyaluronic acid, firming peptides and diamond powder into the skin for a weightless, glass-skin glaze.</p></li>
+          <li><div class="ao-row"><h4>15 Min. Lymphatic Massage</h4><span class="ao-dots"></span><span class="ao-price">$30</span></div><p>Expertly trained lymphatic drainage for a radiant, refreshed glow, reducing puffiness and improving circulation.</p></li>
+          <li><div class="ao-row"><h4>Botanical Scalp Treatment</h4><span class="ao-dots"></span><span class="ao-price">$30</span></div><p>A restorative scalp treatment to nourish, stimulate and support healthy hair growth, with botanical serum, scalp massage and high frequency. <small>Not pregnancy safe</small></p></li>
+          <li><div class="ao-row"><h4>LED Light Therapy</h4><span class="ao-dots"></span><span class="ao-price">$30</span></div><p>Promotes collagen production, decreases inflammation and supports healthy cell turnover. <small>Included in the Timeless &amp; Acne Facials</small></p></li>
+          <li><div class="ao-row"><h4>Dermaplaning</h4><span class="ao-dots"></span><span class="ao-price">$50</span></div><p>Removes unwanted peach fuzz to reveal radiant, exfoliated skin. <small>Not for active acne or acne-prone skin</small></p></li>
+          <li><div class="ao-row"><h4>High Frequency</h4><span class="ao-dots"></span><span class="ao-price">$20</span></div><p>Helps oxygenate the skin, treat acne and fine lines. <small>Included in the Acne Facial · Not pregnancy safe</small></p></li>
+          <li><div class="ao-row"><h4>Extractions</h4><span class="ao-dots"></span><span class="ao-price">$15</span></div><p>Safely removes blackheads, whiteheads and clogged pores to clear congestion without irritation. <small>Included in the Acne Facial</small></p></li>
+        </ul>
+        <p class="panel-note">Choose add-ons alongside your facial when you book.</p>
+      </details>
     </div>
 
     <div class="panel" id="brows" role="tabpanel">
       <div class="svc">
         <h3>Brow Sculpt + Define</h3><span class="meta">75 min · $145</span><a href="#" class="link" data-book>Book</a>
-        <p>The full transformation: lamination, shaping and a custom tint. Lasts 4–8 weeks.</p>
+        <p>Complete brow transformation. Lamination lifts and sculpts, precision shaping, tweezing and trimming create symmetry, and a custom tint adds depth and polish. Results last 4–8 weeks.</p>
       </div>
       <div class="svc">
         <h3>Brow Lamination + Tint</h3><span class="meta">50 min · $115</span><a href="#" class="link" data-book>Book</a>
-        <p>Lifted, fuller brows with deepened color. Lasts 4–8 weeks. Shaping not included.</p>
+        <p>Sleek, lifted brows with lasting definition. Lamination lifts hairs for a fuller, uniform shape, and tint deepens color for a bolder, more polished look. Results last 4–8 weeks. Does not include shaping.</p>
       </div>
       <div class="svc">
         <h3>Brow Lamination</h3><span class="meta">40 min · $85</span><a href="#" class="link" data-book>Book</a>
-        <p>Sleek, lifted brows that hold their shape for weeks. Shaping not included.</p>
+        <p>Sleek, lifted brows with effortless polish. Lamination realigns and lifts hairs for a fuller, uniform shape that holds for weeks. Results last 4–8 weeks. Does not include waxing, tweezing or shaping.</p>
       </div>
       <div class="svc">
         <h3>Brow Wax + Tint</h3><span class="meta">40 min · $60</span><a href="#" class="link" data-book>Book</a>
-        <p>Wax shaping with tweezing and trimming, plus tint for color and dimension. Tint lasts 2–4 weeks.</p>
+        <p>Gentle, non-comedogenic wax shaping with tweezing and trimming, finished with a premium tint to enhance color and dimension. Tint lasts 2–4 weeks.</p>
       </div>
       <div class="svc">
         <h3>Brow Wax</h3><span class="meta">30 min · $40</span><a href="#" class="link" data-book>Book</a>
-        <p>Gentle wax shaping, tweezing and trimming for a clean, refined finish.</p>
+        <p>Shape and clean up your brows using gentle, non-comedogenic wax, followed by precise tweezing and trimming for a refined finish.</p>
       </div>
       <div class="svc">
         <h3>Brow Tweeze</h3><span class="meta">30 min · $45</span><a href="#" class="link" data-book>Book</a>
-        <p>Precise tweezing and trimming for those who can't be waxed.</p>
+        <p>Precise tweezing and trimming for a refined finish, for those who cannot be waxed. Not intended for those who experience high levels of pain from tweezing.</p>
       </div>
       <p class="panel-note">Lip and chin waxing also available.</p>
     </div>
 
-    <div class="panel" id="addons" role="tabpanel">
-      <div class="svc">
-        <h3>Oxygen Hydration Infusion</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
-        <p>Cold oxygen infuses hyaluronic acid and peptides for an instant glass-skin glow.</p>
-      </div>
-      <div class="svc">
-        <h3>15 Min. Lymphatic Massage</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
-        <p>Depuffs, sculpts and boosts circulation.</p>
-      </div>
-      <div class="svc">
-        <h3>Botanical Scalp Treatment</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
-        <p>Scalp serum, massage and high frequency to support healthy hair. <small>Not pregnancy safe</small></p>
-      </div>
-      <div class="svc">
-        <h3>LED Light Therapy</h3><span class="meta">$30</span><a href="#" class="link" data-book>Book</a>
-        <p>Supports collagen and calms inflammation. <small>Included in Timeless &amp; Acne Facials</small></p>
-      </div>
-      <div class="svc">
-        <h3>Dermaplaning</h3><span class="meta">$50</span><a href="#" class="link" data-book>Book</a>
-        <p>Removes peach fuzz for smooth, glowing skin. <small>Not for acne-prone skin</small></p>
-      </div>
-      <div class="svc">
-        <h3>High Frequency</h3><span class="meta">$20</span><a href="#" class="link" data-book>Book</a>
-        <p>Helps with breakouts and fine lines. <small>Included in Acne Facial · Not pregnancy safe</small></p>
-      </div>
-      <div class="svc">
-        <h3>Extractions</h3><span class="meta">$15</span><a href="#" class="link" data-book>Book</a>
-        <p>Clears blackheads and congestion. <small>Included in Acne Facial</small></p>
-      </div>
-      <p class="panel-note">Add-ons are booked together with a facial.</p>
-    </div>
 
     <div class="consult">
       <div>
         <h3>Not sure where to start?</h3>
-        <p>Book a 30-minute Skin Consultation, in studio or virtual · $90</p>
+        <p>A personalized consultation followed by regimen suggestions tailored to your skin. In studio or virtual · 30 min · $90</p>
       </div>
       <a href="#" class="btn" data-book>Book a Consultation <span class="arrow"></span></a>
     </div>
