@@ -414,6 +414,15 @@ header.away{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-even
 /* Full-bleed background video (with the still frame underneath as a fallback) */
 .stage-media{position:absolute;inset:0;z-index:-2;background:var(--mist) url("images/hero.jpg") 50% 22%/cover no-repeat}
 .stage-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+/* Background only: never tappable, never shows player controls */
+.stage-media,.stage-media video{pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.stage-media video::-webkit-media-controls,
+.stage-media video::-webkit-media-controls-enclosure,
+.stage-media video::-webkit-media-controls-panel,
+.stage-media video::-webkit-media-controls-overlay-play-button,
+.stage-media video::-webkit-media-controls-start-playback-button,
+.stage-media video::-webkit-media-controls-fullscreen-button,
+.stage-media video::-webkit-media-controls-mute-button{display:none!important;-webkit-appearance:none;opacity:0!important}
 /* Soft white wash so the text stays legible over the video */
 .stage-veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(251,251,250,.6) 0,rgba(251,251,250,0) 150px),linear-gradient(90deg,rgba(251,251,250,.95) 0%,rgba(251,251,250,.88) 34%,rgba(251,251,250,.5) 60%,rgba(251,251,250,.12) 100%)}
 .hero-inner{width:100%;padding-top:calc(73px + clamp(56px,8vw,110px));padding-bottom:clamp(56px,8vw,110px)}
@@ -571,7 +580,7 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
 <!-- HERO -->
 <section class="hero">
   <div class="stage-media" aria-hidden="true">
-    <video autoplay muted loop playsinline disablepictureinpicture preload="auto" poster="images/hero.jpg">
+    <video autoplay muted loop playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nofullscreen nodownload noremoteplayback noplaybackrate" preload="auto" poster="images/hero.jpg" tabindex="-1">
       <source src="images/hero.mp4" type="video/mp4">
     </video>
   </div>
@@ -801,20 +810,33 @@ setLinks("[data-book]", BOOKING_URL);
 setLinks("[data-ig]", INSTAGRAM_URL);
 setLinks("[data-gift]", GIFT_CARD_URL);
 
-/* Hero video: make sure it starts. Some desktop browsers block or delay
-   autoplay, so keep nudging it until it plays (on load, when the tab
-   becomes visible, and on the visitor's first click, scroll or key press). */
+/* Hero video: a silent background loop only.
+   - Desktop: if autoplay was blocked, retry on the first click or key press.
+   - Phones: never start it from a tap or scroll (some phone browsers open a
+     full-screen player when that happens). If the phone won't autoplay it,
+     hide the video and the still frame shows instead. */
 const heroVid = document.querySelector(".stage-media video");
 if (heroVid) {
   heroVid.muted = true; heroVid.defaultMuted = true; heroVid.playsInline = true;
-  const tryPlay = () => { if (heroVid.paused) heroVid.play().catch(() => {}); };
+  heroVid.setAttribute("muted", ""); heroVid.controls = false;
+  const touch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  const hide = () => { try { heroVid.pause(); } catch (e) {} heroVid.style.display = "none"; };
+  const tryPlay = () => {
+    if (!heroVid.paused) return;
+    const p = heroVid.play();
+    if (p && p.catch) p.catch(() => { if (touch) hide(); });
+  };
   ["loadeddata", "canplay"].forEach(ev => heroVid.addEventListener(ev, tryPlay));
-  /* If an ad blocker stops the video, hide it so the still frame shows instead */
-  heroVid.addEventListener("error", () => { heroVid.style.display = "none"; }, true);
+  heroVid.addEventListener("error", hide, true);   // e.g. blocked by an ad blocker
+  /* If a browser ever tries to open it full screen, close that and fall back to the still */
+  heroVid.addEventListener("webkitbeginfullscreen", () => { try { heroVid.webkitExitFullscreen(); } catch (e) {} hide(); });
+  document.addEventListener("fullscreenchange", () => { if (document.fullscreenElement === heroVid) { document.exitFullscreen().catch(() => {}); hide(); } });
   tryPlay();
   document.addEventListener("visibilitychange", () => { if (!document.hidden) tryPlay(); });
-  const kick = () => { tryPlay(); ["pointerdown", "keydown", "scroll", "touchstart"].forEach(ev => window.removeEventListener(ev, kick)); };
-  ["pointerdown", "keydown", "scroll", "touchstart"].forEach(ev => window.addEventListener(ev, kick, { passive: true }));
+  if (!touch) {
+    const kick = () => { tryPlay(); ["pointerdown", "keydown"].forEach(ev => window.removeEventListener(ev, kick)); };
+    ["pointerdown", "keydown"].forEach(ev => window.addEventListener(ev, kick, { passive: true }));
+  }
 }
 
 /* Photos: load if present, otherwise keep the placeholder */
