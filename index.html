@@ -515,6 +515,32 @@ details .ans{padding:0 0 24px;color:#3d3d3d;font-size:14px;max-width:62ch}
 .gift p{color:#3d3d3d;margin-bottom:14px}
 .gift .btn{margin-top:22px}
 
+/* Pore-clogging ingredient checker */
+.chk-intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:end;margin-bottom:36px}
+.chk-intro h2{margin-top:14px}
+.chk-intro p{color:#3d3d3d}
+.chk-box label{display:block;margin-bottom:12px}
+.chk-box textarea{display:block;width:100%;min-height:170px;resize:vertical;padding:18px 20px;border:1px solid var(--line);border-radius:0;background:var(--white);color:var(--ink);font-family:var(--sans);font-size:13px;font-weight:300;line-height:1.7;transition:border-color .3s}
+.chk-box textarea:focus{outline:none;border-color:var(--ink)}
+.chk-box textarea::placeholder{color:#a3a3a0}
+.chk-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.chk-actions .btn{cursor:pointer;font-family:var(--sans)}
+.chk-result{margin-top:36px}
+.chk-result[hidden]{display:none}
+.chk-verdict{font-family:var(--serif);font-size:clamp(26px,3vw,36px);line-height:1.2;margin-bottom:8px}
+.chk-sub{color:#474747;font-size:13.5px;margin-bottom:22px}
+.chk-flags{list-style:none;border-top:1px solid var(--line);margin-bottom:28px}
+.chk-flags li{display:flex;justify-content:space-between;gap:8px 24px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line)}
+.chk-flags .nm{font-size:14px;color:var(--ink)}
+.chk-flags .why{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+.chk-all{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+.chk-all span{font-size:11.5px;line-height:1.4;padding:6px 10px;border:1px solid var(--line);color:#474747}
+.chk-all span.bad{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.chk-note{font-size:12px;color:var(--grey);max-width:72ch}
+.chk-note a{color:inherit;border-bottom:1px solid currentColor;padding-bottom:1px;transition:color .3s}
+.chk-note a:hover{color:var(--ink)}
+@media (max-width:860px){.chk-intro{grid-template-columns:1fr;gap:16px}}
+
 /* Footer */
 footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 30px;font-size:14px}
 .foot-cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:48px;border-bottom:1px solid #333;margin-bottom:44px}
@@ -765,6 +791,182 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
   </div>
 </section>
 
+
+<!-- PORE-CLOGGING INGREDIENT CHECKER
+     The list of flagged ingredients is PORE_CLOGGERS in the script just below.
+     Each entry is a display name and the spellings that should match it. -->
+<section class="sec" id="ingredient-checker">
+  <div class="wrap">
+    <div class="chk-intro">
+      <div>
+        <div class="eyebrow">Ingredient Checker</div>
+        <h2>Is it <em>pore-clogging</em>?</h2>
+      </div>
+      <p>Paste the ingredient list from any skincare, makeup or hair product and see if it contains ingredients known to clog pores. The list is based on the pore-clogging ingredients Face Reality acne experts screen for.</p>
+    </div>
+    <form class="chk-box" id="chk-form" novalidate>
+      <label class="eyebrow" for="chk-input">Ingredient list</label>
+      <textarea id="chk-input" spellcheck="false" placeholder="Water, Glycerin, Isopropyl Myristate, Cetyl Alcohol, ..."></textarea>
+      <div class="chk-actions">
+        <button type="submit" class="btn">Check Ingredients <span class="arrow"></span></button>
+        <button type="button" class="btn ghost" id="chk-clear">Clear</button>
+      </div>
+    </form>
+    <div class="chk-result" id="chk-result" aria-live="polite" hidden></div>
+  </div>
+</section>
+
+<script>
+/* ===== Pore-clogging ingredients =====
+   [display name, ...spellings to match]. Matching ignores case, punctuation
+   and hyphens, and looks for whole words, so "Laureth-4" won't match "Laureth-40". */
+const PORE_CLOGGERS = [
+  ["Acetylated Lanolin", "acetylated lanolin"],
+  ["Acetylated Lanolin Alcohol", "acetylated lanolin alcohol"],
+  ["Algae Extract", "algae", "alga"],
+  ["Algin", "algin"],
+  ["Arachidic Acid", "arachidic acid"],
+  ["Ascorbyl Palmitate", "ascorbyl palmitate"],
+  ["Benzaldehyde", "benzaldehyde"],
+  ["Butyl Stearate", "butyl stearate"],
+  ["Butylated Hydroxyanisole", "butylated hydroxyanisole"],
+  ["Carrageenan", "carrageenan", "carrageenans"],
+  ["Cetyl Acetate", "cetyl acetate"],
+  ["Chlorella", "chlorella"],
+  ["Chondrus Crispus (Irish Moss)", "chondrus crispus", "irish moss", "sea moss"],
+  ["Coal Tar", "coal tar"],
+  ["Cocoa Butter", "cocoa butter", "theobroma cacao seed butter", "theobroma cacao cocoa seed butter"],
+  ["Coconut Alkanes", "coconut alkanes"],
+  ["Coconut Butter", "coconut butter"],
+  ["Coconut Oil", "coconut oil", "cocos nucifera oil", "cocos nucifera coconut oil"],
+  ["Cotton Awws Oil", "cotton awws oil"],
+  ["Cotton Seed Oil", "cotton seed oil", "cottonseed oil", "gossypium herbaceum seed oil", "gossypium herbaceum cotton seed oil"],
+  ["D&C Red 3", "d c red 3", "d c red no 3", "red 3", "ci 45430"],
+  ["D&C Red 17", "d c red 17", "d c red no 17", "red 17", "ci 26100"],
+  ["D&C Red 21", "d c red 21", "d c red no 21", "red 21", "ci 45380"],
+  ["D&C Red 30", "d c red 30", "d c red no 30", "red 30", "ci 73360"],
+  ["D&C Red 36", "d c red 36", "d c red no 36", "red 36", "ci 12085"],
+  ["Decyl Oleate", "decyl oleate"],
+  ["Dioctyl Succinate", "dioctyl succinate", "diethylhexyl succinate"],
+  ["Disodium Monooleamido PEG-2 Sulfosuccinate", "disodium monooleamido peg 2 sulfosuccinate"],
+  ["Ethoxylated Lanolin", "ethoxylated lanolin"],
+  ["Ethylhexyl Palmitate", "ethylhexyl palmitate", "octyl palmitate"],
+  ["Glyceryl Stearate SE", "glyceryl stearate se"],
+  ["Glyceryl-3 Diisostearate", "glyceryl 3 diisostearate"],
+  ["Hexadecyl Alcohol", "hexadecyl alcohol"],
+  ["Hydrogenated Vegetable Oil", "hydrogenated vegetable oil"],
+  ["Isocetyl Alcohol", "isocetyl alcohol"],
+  ["Isocetyl Stearate", "isocetyl stearate"],
+  ["Isodecyl Oleate", "isodecyl oleate"],
+  ["Isopropyl Isostearate", "isopropyl isostearate"],
+  ["Isopropyl Linoleate", "isopropyl linoleate", "isopropyl linolate"],
+  ["Isopropyl Myristate", "isopropyl myristate"],
+  ["Isopropyl Palmitate", "isopropyl palmitate"],
+  ["Isostearyl Isostearate", "isostearyl isostearate"],
+  ["Isostearyl Neopentanoate", "isostearyl neopentanoate"],
+  ["Kelp", "kelp"],
+  ["Laminaria (Seaweed)", "laminaria"],
+  ["Laureth-4", "laureth 4"],
+  ["Laureth-23", "laureth 23"],
+  ["Lauric Acid", "lauric acid"],
+  ["Mink Oil", "mink oil"],
+  ["Myristic Acid", "myristic acid"],
+  ["Myristyl Lactate", "myristyl lactate"],
+  ["Myristyl Myristate", "myristyl myristate"],
+  ["Octyl Stearate", "octyl stearate", "ethylhexyl stearate"],
+  ["Oleth-3", "oleth 3"],
+  ["Oleyl Alcohol", "oleyl alcohol"],
+  ["PEG-8 Stearate", "peg 8 stearate"],
+  ["PEG-16 Lanolin", "peg 16 lanolin", "solulan 16"],
+  ["PEG-200 Dilaurate", "peg 200 dilaurate"],
+  ["Plankton", "plankton"],
+  ["Polyglyceryl-3 Diisostearate", "polyglyceryl 3 diisostearate"],
+  ["Potassium Chloride", "potassium chloride"],
+  ["PPG-2 Myristyl Propionate", "ppg 2 myristyl propionate", "ppg 2 myristyl ether propionate"],
+  ["Propylene Glycol Monostearate", "propylene glycol monostearate", "pg monostearate", "propylene glycol stearate"],
+  ["Red Algae", "red algae"],
+  ["Seaweed", "seaweed"],
+  ["Shark Liver Oil", "shark liver oil"],
+  ["Sodium Chloride (Salt)", "sodium chloride", "sea salt", "maris sal"],
+  ["Sodium Laureth Sulfate", "sodium laureth sulfate"],
+  ["Sodium Lauryl Sulfate", "sodium lauryl sulfate"],
+  ["Sorbitan Oleate", "sorbitan oleate"],
+  ["Soybean Oil", "soybean oil", "glycine soja oil", "glycine soja soybean oil"],
+  ["Spirulina", "spirulina"],
+  ["Steareth-10", "steareth 10"],
+  ["Stearic Acid TEA", "stearic acid tea", "tea stearate"],
+  ["Stearyl Heptanoate", "stearyl heptanoate"],
+  ["Sulfated Castor Oil", "sulfated castor oil"],
+  ["Sulfated Jojoba Oil", "sulfated jojoba oil"],
+  ["Wheat Germ Glyceride", "wheat germ glyceride", "wheat germ glycerides"],
+  ["Wheat Germ Oil", "wheat germ oil", "triticum vulgare germ oil", "triticum vulgare wheat germ oil"],
+  ["Xylene", "xylene"]
+];
+/* Only pore-clogging when both are in the same product */
+const PORE_CLOGGING_PAIRS = [
+  ["Cetearyl Alcohol + Ceteareth-20", "cetearyl alcohol", "ceteareth 20"]
+];
+
+(() => {
+  const form = document.getElementById("chk-form");
+  if (!form) return;
+  const input = document.getElementById("chk-input");
+  const out = document.getElementById("chk-result");
+
+  const norm = s => " " + s.toLowerCase().replace(/&/g, " ").replace(/[^a-z0-9]+/g, " ").trim() + " ";
+  const has = (n, term) => n.includes(" " + term + " ");
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  /* Split on commas, semicolons, bullets and new lines, but not inside (parentheses) */
+  const split = text => {
+    const parts = []; let cur = "", depth = 0;
+    for (const ch of text.replace(/^\s*(full\s+)?ingredients?\s*:/i, "")) {
+      if (ch === "(" || ch === "[") depth++;
+      if ((ch === ")" || ch === "]") && depth) depth--;
+      if (!depth && /[,;\n\r•·|]/.test(ch)) { parts.push(cur); cur = ""; } else cur += ch;
+    }
+    parts.push(cur);
+    return parts.map(p => p.replace(/\s+/g, " ").replace(/^[\s.*]+|[\s.*]+$/g, "")).filter(Boolean);
+  };
+
+  const check = () => {
+    const items = split(input.value);
+    if (!items.length) { out.hidden = true; out.innerHTML = ""; input.focus(); return; }
+    const normed = items.map(norm);
+    const bad = new Set(), flags = [];
+
+    PORE_CLOGGERS.forEach(([name, ...terms]) => {
+      normed.forEach((n, i) => {
+        if (terms.some(t => has(n, t))) { bad.add(i); flags.push({ name, found: items[i], at: i }); }
+      });
+    });
+    PORE_CLOGGING_PAIRS.forEach(([name, a, b]) => {
+      const ia = normed.findIndex(n => has(n, a)), ib = normed.findIndex(n => has(n, b));
+      if (ia > -1 && ib > -1) { bad.add(ia); bad.add(ib); flags.push({ name, found: items[ia] + " + " + items[ib], at: Math.min(ia, ib) }); }
+    });
+
+    /* One row per pasted ingredient, in the order they were pasted */
+    const rows = [], seen = new Set();
+    flags.sort((a, b) => a.at - b.at).forEach(f => { if (!seen.has(f.found)) { seen.add(f.found); rows.push(f); } });
+
+    const count = rows.length;
+    out.innerHTML = (count
+      ? `<div class="chk-verdict">We found <em>${count}</em> pore-clogging ingredient${count === 1 ? "" : "s"}.</div>
+         <p class="chk-sub">Out of ${items.length} ingredient${items.length === 1 ? "" : "s"} checked. If you're acne-prone, this product may not be the best fit.</p>
+         <ul class="chk-flags">${rows.map(f => `<li><span class="nm">${esc(f.found)}</span>${norm(f.found) === norm(f.name) ? "" : `<span class="why">${esc(f.name)}</span>`}</li>`).join("")}</ul>`
+      : `<div class="chk-verdict">No pore-clogging ingredients <em>found</em>.</div>
+         <p class="chk-sub">Out of ${items.length} ingredient${items.length === 1 ? "" : "s"} checked.</p>`)
+      + `<div class="eyebrow" style="margin-bottom:12px">Your ingredients</div>
+         <div class="chk-all">${items.map((it, i) => `<span${bad.has(i) ? ' class="bad"' : ""}>${esc(it)}</span>`).join("")}</div>
+         <p class="chk-note">This checker is a guide, not a diagnosis. Every skin is different, and a product's formula, strength and how you use it all matter. Not sure about your routine? <a href="${BOOKING_URL}" target="_blank" rel="noopener">Book a Skin Consultation</a> and Jules will go through your products with you.</p>`;
+    out.hidden = false;
+  };
+
+  form.addEventListener("submit", e => { e.preventDefault(); check(); });
+  input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); check(); } });
+  document.getElementById("chk-clear").addEventListener("click", () => { input.value = ""; out.hidden = true; out.innerHTML = ""; input.focus(); });
+})();
+</script>
 
 </main>
 
