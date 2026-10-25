@@ -520,6 +520,23 @@ details .ans{padding:0 0 24px;color:#3d3d3d;font-size:14px;max-width:62ch}
 .chk-teaser h2{margin:14px 0 16px}
 .chk-teaser p{color:#3d3d3d}
 
+/* Testimonials */
+.tst{max-width:860px;margin:0 auto;text-align:center}
+.tst h2{margin-top:14px}
+.tst-viewport{position:relative;overflow:hidden;margin-top:40px}
+.tst-track{display:flex;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.tst-slide{flex:0 0 100%;padding:0 clamp(4px,4vw,48px)}
+.tst-slide blockquote{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(22px,2.6vw,32px);line-height:1.4;color:var(--ink)}
+.tst-slide blockquote::before{content:"\201C";display:block;font-size:64px;line-height:.6;margin-bottom:18px;color:var(--grey)}
+.tst-slide figcaption{margin-top:24px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+.tst-ctrls{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:36px}
+.tst-btn{width:44px;height:44px;border:1px solid var(--line);background:none;cursor:pointer;color:var(--ink);font-family:var(--sans);font-size:15px;transition:border-color .3s,background .3s,color .3s}
+.tst-btn:hover{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.tst-dots{display:flex;gap:10px}
+.tst-dots button{width:7px;height:7px;padding:0;border:1px solid var(--ink);border-radius:50%;background:none;cursor:pointer;transition:background .3s}
+.tst-dots button[aria-current="true"]{background:var(--ink)}
+@media (prefers-reduced-motion:reduce){.tst-track{transition:none}}
+
 /* Footer */
 footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 30px;font-size:14px}
 .foot-cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:48px;border-bottom:1px solid #333;margin-bottom:44px}
@@ -702,6 +719,80 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
     </div>
   </div>
 </section>
+
+<!-- TESTIMONIALS
+     Edit the TESTIMONIALS list in the script just below. Each entry is the
+     quote and how the client is named (first name or initial). The section
+     stays hidden while the list is empty. -->
+<section class="sec" id="testimonials" hidden>
+  <div class="wrap tst">
+    <div class="eyebrow">Kind Words</div>
+    <h2>In their <em>words</em>.</h2>
+    <div class="tst-viewport" aria-roledescription="carousel" aria-label="Client testimonials">
+      <div class="tst-track" aria-live="polite"></div>
+    </div>
+    <div class="tst-ctrls">
+      <button type="button" class="tst-btn" data-tst="prev" aria-label="Previous testimonial">&larr;</button>
+      <div class="tst-dots"></div>
+      <button type="button" class="tst-btn" data-tst="next" aria-label="Next testimonial">&rarr;</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===== Testimonials (from GlossGenius) ===== */
+const TESTIMONIALS = [
+  // { quote: "…", name: "Sarah M." },
+];
+
+(() => {
+  const sec = document.getElementById("testimonials");
+  if (!TESTIMONIALS.length) return;
+  const track = sec.querySelector(".tst-track"), dots = sec.querySelector(".tst-dots");
+  TESTIMONIALS.forEach((t, i) => {
+    const fig = document.createElement("figure");
+    fig.className = "tst-slide";
+    fig.setAttribute("role", "group");
+    fig.setAttribute("aria-roledescription", "slide");
+    fig.setAttribute("aria-label", `${i + 1} of ${TESTIMONIALS.length}`);
+    const q = document.createElement("blockquote"); q.textContent = t.quote;
+    const c = document.createElement("figcaption"); c.textContent = t.name;
+    fig.append(q, c); track.append(fig);
+    const d = document.createElement("button");
+    d.type = "button"; d.setAttribute("aria-label", `Show testimonial ${i + 1}`);
+    d.addEventListener("click", () => { go(i); restart(); });
+    dots.append(d);
+  });
+  sec.hidden = false;
+  if (TESTIMONIALS.length < 2) { sec.querySelector(".tst-ctrls").hidden = true; return; }
+
+  let cur = 0, timer = null;
+  const go = i => {
+    cur = (i + TESTIMONIALS.length) % TESTIMONIALS.length;
+    track.style.transform = `translateX(-${cur * 100}%)`;
+    [...track.children].forEach((s, j) => s.setAttribute("aria-hidden", j !== cur));
+    [...dots.children].forEach((d, j) => d.setAttribute("aria-current", j === cur));
+  };
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const stop = () => { clearInterval(timer); timer = null; };
+  const restart = () => { stop(); if (!still) timer = setInterval(() => go(cur + 1), 7000); };
+  sec.querySelector('[data-tst="prev"]').addEventListener("click", () => { go(cur - 1); restart(); });
+  sec.querySelector('[data-tst="next"]').addEventListener("click", () => { go(cur + 1); restart(); });
+  /* Pause while someone is reading or using the controls */
+  ["mouseenter", "focusin"].forEach(ev => sec.addEventListener(ev, stop));
+  ["mouseleave", "focusout"].forEach(ev => sec.addEventListener(ev, restart));
+  /* Swipe on phones */
+  let x0 = null;
+  track.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; stop(); }, { passive: true });
+  track.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1));
+    restart();
+  });
+  go(0); restart();
+})();
+</script>
 
 <!-- FAQ -->
 <section class="sec" id="faq">
