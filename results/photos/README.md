@@ -5,9 +5,8 @@ Drop photos in this folder and they show up on
 a minute or two later. No code to edit.
 
 Each photo should already have the before and after edited together.
-The site arranges them as a collage of square tiles (photos with the before
-stacked above the after get a tall tile), and visitors can tap any photo to
-see it whole.
+Visitors swipe (or tap the arrows) through them one at a time, each shown
+whole.
 
 ## How to add a photo
 
@@ -19,7 +18,7 @@ If a photo comes off an iPhone as HEIC, export or share it as JPG first.
 
 ## Tips
 
-- Square photos fit the collage best. Keep the faces near the middle, since tiles trim the edges a little.
+- Photos show one at a time and are never cropped, so any shape works.
 - Keep each file under about 1 MB so the page stays quick on phones.
 - Only post photos the client has agreed to share, in writing.
 
