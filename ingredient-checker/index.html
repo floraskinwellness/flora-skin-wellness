@@ -472,7 +472,7 @@ const WHY = {
          <p class="chk-sub">Out of ${items.length} ingredient${items.length === 1 ? "" : "s"} checked.</p>`)
       + `<div class="eyebrow" style="margin-bottom:12px">Your ingredients</div>
          <div class="chk-all">${items.map((it, i) => `<span${bad.has(i) ? ' class="bad"' : ""}>${esc(it)}</span>`).join("")}</div>
-         <p class="chk-note">This checker is a guide, not a diagnosis. Every skin is different, and a product's formula, strength and how you use it all matter. Not sure about your routine? <a href="${BOOKING_URL}" target="_blank" rel="noopener">Book a Skin Consultation</a> and Jules will go through your products with you.</p>`;
+         <p class="chk-note">This checker is a guide, not a diagnosis. Everyone responds differently, and a product's formula, strength and how you use it all matter. Not sure about your routine? <a href="${BOOKING_URL}" target="_blank" rel="noopener">Book a Skin Consultation</a> and Jules will go through your products with you.</p>`;
     out.hidden = false;
   };
 
