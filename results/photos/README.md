@@ -5,27 +5,21 @@ Drop photos in this folder and they show up on
 a minute or two later. No code to edit.
 
 Each photo should already have the before and after edited together.
-The site shows every photo whole, never cropped.
+The site arranges them as a collage of square tiles (photos with the before
+stacked above the after get a tall tile), and visitors can tap any photo to
+see it whole.
 
 ## How to add a photo
 
 1. On GitHub, open this folder (`results/photos`).
-2. Click **Add file → Upload files**, drag in the photo, then click **Commit changes**.
+2. Click **Add file → Upload files**, drag in the photos, then click **Commit changes**.
 
-## Naming
-
-```
-2026-10-25-acne-facial-3-months.jpg
-```
-
-- **Start with the date** (year-month-day). Newest photos show first. The date is never shown on the site.
-- **The words after the date become the caption.** The example above shows as "Acne facial 3 months". Leave the words out (`2026-10-25.jpg`) for no caption. A "before-after" at the end of the name is left out of the caption.
-- Use only letters, numbers and dashes. No spaces, and no client names.
-- JPG, PNG or WEBP. If a photo comes off an iPhone as HEIC, export or share it as JPG first.
+File names are never shown on the site, so any name works. JPG, PNG or WEBP.
+If a photo comes off an iPhone as HEIC, export or share it as JPG first.
 
 ## Tips
 
-- Photos sit two to a row on computers and one per row on phones. Using the same shape for all of them (for example, all square) keeps the rows tidy.
+- Square photos fit the collage best. Keep the faces near the middle, since tiles trim the edges a little.
 - Keep each file under about 1 MB so the page stays quick on phones.
 - Only post photos the client has agreed to share, in writing.
 

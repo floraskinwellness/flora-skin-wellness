@@ -27,7 +27,7 @@
   This page shows every photo in the results/photos folder.
   Nothing here needs editing to add photos: upload them to results/photos
   on GitHub and they appear here a minute or two later.
-  Naming rules are in results/photos/README.md.
+  File names don't matter and are never shown. Tips are in results/photos/README.md.
 
   Client photos show in full color (redness and texture matter here).
   For black & white like the rest of the site, set --result-filter: grayscale(1); below.
@@ -77,12 +77,25 @@ header{position:sticky;top:0;z-index:50;background:var(--white);border-bottom:1p
 .intro p{color:#3d3d3d}
 
 /* Gallery */
-.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(40px,5vw,64px) clamp(24px,4vw,56px);padding-bottom:clamp(64px,8vw,110px)}
-.gallery{align-items:start}
-.result{min-width:0}
-.result img{display:block;width:100%;height:auto;background:var(--mist);filter:var(--result-filter)}
-.result h2{font-size:clamp(22px,2.2vw,27px);margin-top:16px}
-.status{grid-column:1/-1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:48px 0;text-align:center;color:#474747}
+/* Collage: square tiles; tall photos take two rows, wide ones two columns,
+   and "dense" packing fills the gaps. Tap a photo to see it uncropped. */
+.gallery-wrap{container-type:inline-size;padding-bottom:clamp(64px,8vw,110px)}
+.gallery{--cols:4;--gap:8px;display:grid;grid-template-columns:repeat(var(--cols),1fr);grid-auto-rows:calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols));grid-auto-flow:dense;gap:var(--gap)}
+.result{position:relative;min-width:0;margin:0;padding:0;border:0;background:var(--mist);cursor:zoom-in;overflow:hidden}
+.result.tall{grid-row:span 2}
+.result.wide{grid-column:span 2}
+/* The newest photo leads as a large tile (when it's roughly square) */
+.result.lead{grid-row:span 2;grid-column:span 2}
+.result img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;filter:var(--result-filter);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.result:hover img{transform:scale(1.03)}
+.result:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* Full-size view */
+.viewer{border:0;padding:0;margin:auto;max-width:min(92vw,1000px);max-height:92vh;background:transparent;overflow:visible}
+.viewer::backdrop{background:rgba(20,20,20,.86)}
+.viewer img{display:block;max-width:min(92vw,1000px);max-height:92vh;width:auto;height:auto;filter:var(--result-filter)}
+.viewer button{position:fixed;top:14px;right:18px;background:none;border:0;color:var(--white);font-family:var(--sans);font-size:11px;letter-spacing:.26em;text-transform:uppercase;cursor:pointer;padding:10px}
+.status{grid-column:1/-1;grid-row:span 2;align-self:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:48px 0;text-align:center;color:#474747}
 .status h2{font-size:clamp(28px,3vw,38px);margin-bottom:10px;color:var(--ink)}
 .status p{margin:0 auto}
 .status a{border-bottom:1px solid currentColor}
@@ -101,12 +114,13 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
 @media (max-width:860px){
   .nav ul li.hide-m{display:none}
   .nav ul{gap:0}
-  .gallery{grid-template-columns:1fr}
+  .gallery{--cols:3}
 }
 @media (max-width:560px){
   .wordmark{font-size:13px}
   .nav .btn{padding:10px 14px;font-size:10px;letter-spacing:.14em}
   .nav .btn .arrow{display:none}
+  .gallery{--cols:2;--gap:6px}
 }
 </style>
 </head>
@@ -133,10 +147,19 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
   </div>
 </section>
 
-<section class="wrap gallery" id="gallery" aria-live="polite">
-  <div class="status"><p>Loading results…</p></div>
+<section class="wrap">
+  <div class="gallery-wrap">
+    <div class="gallery" id="gallery" aria-live="polite">
+      <div class="status"><p>Loading results…</p></div>
+    </div>
+  </div>
 </section>
 </main>
+
+<dialog class="viewer" id="viewer" aria-label="Before and after photo">
+  <button type="button" data-close>Close ✕</button>
+  <img alt="">
+</dialog>
 
 <footer>
   <div class="wrap">
@@ -159,8 +182,8 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 
 /* ===== Before & after gallery =====
    Lists the photos in results/photos through GitHub's public API and shows
-   each one whole (each photo already has the before and after edited
-   together). Sorted by name, Z to A, so names that start with a date
+   them as a collage (each photo already has the before and after edited
+   together). File names are never shown. Sorted by name, Z to A, so names that start with a date
    (2026-10-25-...) show newest first. */
 (() => {
   const REPO = "floraskinwellness/flora-skin-wellness";
@@ -171,17 +194,6 @@ document.getElementById("yr").textContent = new Date().getFullYear();
   const box = document.getElementById("gallery");
 
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  /* "2026-10-25-acne-facial-3-months" -> "Acne facial 3 months".
-     A leading date or number is only for ordering and is never shown,
-     and a trailing "before-after" is dropped. */
-  const caption = key => {
-    const words = key
-      .replace(/^[\d\s._-]+(?=[a-z])/i, "").replace(/^[\d\s._-]+$/, "")
-      .replace(/[\s._-]*before[\s._-]*(and|&)?[\s._-]*after$/i, "")
-      .replace(/[_-]+/g, " ").trim();
-    return words ? words[0].toUpperCase() + words.slice(1) : "";
-  };
-
   const listFiles = async () => {
     try {
       const hit = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
@@ -200,10 +212,19 @@ document.getElementById("yr").textContent = new Date().getFullYear();
     .filter(Boolean)
     .sort((a, b) => b.key.localeCompare(a.key, undefined, { numeric: true }));
 
-  /* Prefer the copy on this site; fall back to GitHub's copy if the site
-     hasn't finished publishing a just-uploaded photo yet. */
-  const img = (f, alt) =>
-    `<img src="photos/${encodeURIComponent(f.name)}" data-raw="${esc(f.raw || "")}" alt="${esc(alt)}" loading="lazy" decoding="async">`;
+  /* Load a photo to learn its shape. Prefer the copy on this site; fall back
+     to GitHub's copy if the site hasn't finished publishing a just-uploaded
+     photo yet. Photos that won't load at all are left out. */
+  const measure = f => new Promise(done => {
+    const im = new Image(), srcs = [`photos/${encodeURIComponent(f.name)}`, f.raw].filter(Boolean);
+    im.onload = () => done({ src: im.src, r: im.naturalHeight / im.naturalWidth });
+    im.onerror = () => srcs.length ? (im.src = srcs.shift()) : done(null);
+    im.src = srcs.shift();
+  });
+
+  /* Full-size view, so cropped collage tiles can be seen whole */
+  const viewer = document.getElementById("viewer"), big = viewer.querySelector("img");
+  viewer.addEventListener("click", e => { if (e.target !== big) viewer.close(); });
 
   const render = list => {
     if (!list.length) {
@@ -211,22 +232,36 @@ document.getElementById("yr").textContent = new Date().getFullYear();
         <p>Jules is gathering client photos now. In the meantime, see her work on <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener">Instagram</a>.</p></div>`;
       return;
     }
-    box.innerHTML = list.map(p => {
-      const cap = caption(p.key);
-      return `<article class="result">
-        ${img(p, cap ? `Before and after: ${cap.toLowerCase()}` : "Client before and after")}
-        ${cap ? `<h2>${esc(cap)}</h2>` : ""}
-      </article>`;
+    /* Tall photos (before above after) take two rows, wide ones two columns,
+       and the newest leads as a large tile. Shapes are known before anything
+       is placed. */
+    list.forEach((p, i) => p.shape = p.r > 1.4 ? " tall" : p.r < 0.7 ? " wide" : i ? "" : " lead");
+    /* Grid packing only backfills gaps with photos that come later, so a
+       tall or wide photo near the end would leave holes. Spread them through
+       the first part instead: one after every two square photos. */
+    const big2 = list.filter(p => p.shape === " tall" || p.shape === " wide");
+    const rest = list.filter(p => !big2.includes(p));
+    const order = rest.slice(0, 1);
+    rest.slice(1).forEach((p, i) => { if (i % 2 === 0 && big2.length) order.push(big2.shift()); order.push(p); });
+    order.push(...big2);
+    box.innerHTML = order.map(p => {
+      const shape = p.shape;
+      return `<button type="button" class="result${shape}" aria-label="View larger"><img src="${esc(p.src)}" alt="Client before and after" decoding="async"></button>`;
     }).join("");
-    box.querySelectorAll("img[data-raw]").forEach(el => el.addEventListener("error", () => {
-      if (el.dataset.raw && el.src !== el.dataset.raw) el.src = el.dataset.raw;
+    box.querySelectorAll(".result").forEach(btn => btn.addEventListener("click", () => {
+      const el = btn.querySelector("img");
+      big.src = el.src; big.alt = el.alt;
+      viewer.showModal();
     }));
   };
 
-  listFiles().then(files => render(photos(files))).catch(() => {
-    box.innerHTML = `<div class="status"><h2>Results are taking a <em>moment</em>.</h2>
-      <p>Please refresh in a minute, or see Jules' work on <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener">Instagram</a>.</p></div>`;
-  });
+  listFiles()
+    .then(files => Promise.all(photos(files).map(measure)))
+    .then(list => render(list.filter(Boolean)))
+    .catch(() => {
+      box.innerHTML = `<div class="status"><h2>Results are taking a <em>moment</em>.</h2>
+        <p>Please refresh in a minute, or see Jules' work on <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener">Instagram</a>.</p></div>`;
+    });
 })();
 </script>
 </body>
