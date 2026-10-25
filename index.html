@@ -491,6 +491,11 @@ header.away{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-even
 .about .creds span{display:block}
 .about .creds span+span{margin-top:4px}
 
+/* Before & after teaser (gallery lives at /results/) */
+.results-teaser{display:flex;justify-content:space-between;align-items:center;gap:24px 40px;flex-wrap:wrap}
+.results-teaser h2{margin:14px 0 14px}
+.results-teaser p{color:#3d3d3d}
+
 /* FAQ */
 .faq{max-width:820px}
 details{border-bottom:1px solid var(--line)}
@@ -592,6 +597,7 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
     <ul>
       <li class="hide-m"><a href="#services">Services</a></li>
       <li class="hide-m"><a href="#about">About</a></li>
+      <li class="hide-m"><a href="results/">Results</a></li>
       <li class="hide-m"><a href="#faq">FAQ</a></li>
       <li><a href="#" class="btn" data-book>Book Now <span class="arrow"></span></a></li>
     </ul>
@@ -718,6 +724,18 @@ footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 3
       <div class="creds"><span>Licensed Esthetician &amp; Holistic Skin Practitioner</span><span>Face Reality Level 2 Acne Expert</span></div>
       <a href="#" class="btn" data-book>Book With Jules <span class="arrow"></span></a>
     </div>
+  </div>
+</section>
+
+<!-- BEFORE & AFTER teaser: the gallery itself is results/index.html -->
+<section class="sec" id="results">
+  <div class="wrap results-teaser">
+    <div>
+      <div class="eyebrow">Before &amp; After</div>
+      <h2>Real skin, real <em>results</em>.</h2>
+      <p>See what consistent care can do, in photos shared by Flora clients.</p>
+    </div>
+    <a href="results/" class="btn ghost">See the Results <span class="arrow"></span></a>
   </div>
 </section>
 
@@ -911,7 +929,7 @@ const TESTIMONIALS = [
       </div>
       <div>
         <h4>Connect</h4>
-        <ul><li><a href="#" data-book>Book Online</a></li><li><a href="#" data-gift>Gift Cards</a></li><li><a href="#" data-ig>Instagram</a></li><li><a href="/ingredient-checker/">Ingredient Checker</a></li><li><a href="mailto:floraskinwellness@gmail.com">floraskinwellness@gmail.com</a></li></ul>
+        <ul><li><a href="#" data-book>Book Online</a></li><li><a href="#" data-gift>Gift Cards</a></li><li><a href="results/">Before &amp; After</a></li><li><a href="#" data-ig>Instagram</a></li><li><a href="/ingredient-checker/">Ingredient Checker</a></li><li><a href="mailto:floraskinwellness@gmail.com">floraskinwellness@gmail.com</a></li></ul>
       </div>
     </div>
     <div class="legal">
