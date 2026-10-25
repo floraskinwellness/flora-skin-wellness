@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pore-Clogging Ingredient Checker | Flora Skin Wellness</title>
+<meta name="description" content="Paste any skincare, makeup or hair product's ingredient list to see which ingredients may clog pores, why, and their comedogenic rating. Free tool from Flora Skin Wellness in Spokane Valley, WA.">
+<link rel="canonical" href="https://www.floraskinwellness.com/ingredient-checker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Flora Skin Wellness">
+<meta property="og:title" content="Pore-Clogging Ingredient Checker | Flora Skin Wellness">
+<meta property="og:description" content="Paste a product's ingredient list to see which ingredients may clog pores, why, and their comedogenic rating.">
+<meta property="og:url" content="https://www.floraskinwellness.com/ingredient-checker/">
+<meta property="og:image" content="https://www.floraskinwellness.com/images/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico?v=2" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
+<meta name="theme-color" content="#fbfbfa">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&family=Beth+Ellen&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --white:#fbfbfa; --paper:#f5f5f3; --mist:#eeeeec; --line:#e2e2df;
+  --grey:#6e6e6b; --ink:#1e1e1e;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --sans:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --photo-filter: grayscale(1);
+  --max:1180px; --gutter:clamp(24px,6vw,64px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+body{overflow-x:clip;background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ink);color:var(--white)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.eyebrow{font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+em{font-style:italic}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:300;line-height:1.1}
+h2{font-size:clamp(36px,4.6vw,56px)}
+p{max-width:60ch}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:14px;font-size:11px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;padding:17px 32px;border:1px solid var(--ink);background:var(--ink);color:var(--white);transition:background .35s,color .35s}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--white)}
+.btn .arrow{width:20px;height:1px;background:currentColor;position:relative;transition:width .35s}
+.btn .arrow::after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
+.btn:hover .arrow{width:30px}
+.link{font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:400;border-bottom:1px solid currentColor;padding-bottom:3px;white-space:nowrap;transition:opacity .3s}
+.link:hover{opacity:.5}
+
+/* Header */
+header{position:sticky;top:0;z-index:50;background:transparent;border-bottom:1px solid transparent;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .35s,background .35s,border-color .35s,visibility 0s}
+/* Transparent over the video; solid once scrolled past it */
+header.solid{background:var(--white);border-bottom-color:var(--line)}
+/* Hidden while scrolling through the video */
+header.away{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .3s,background 0s .45s,border-color 0s .45s,visibility 0s .45s}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
+.wordmark{font-family:"Beth Ellen", var(--serif);font-size:19px;font-weight:400;line-height:1.5;white-space:nowrap;padding-top:6px}
+.nav ul{list-style:none;display:flex;align-items:center;gap:34px}
+.nav ul a:not(.btn){font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:400;transition:opacity .3s}
+.nav ul a:not(.btn):hover{opacity:.45}
+.nav .btn{padding:12px 22px}
+
+header{background:var(--white);border-bottom-color:var(--line)}
+.nav ul a.on{opacity:.45}
+
+/* Sections */
+.sec{padding:clamp(64px,8vw,110px) 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{margin-top:14px}
+
+.chk-page{border-top:0;padding-top:clamp(40px,6vw,80px)}
+.chk-page h1{font-size:clamp(42px,5vw,64px);margin-top:14px}
+
+/* Pore-clogging ingredient checker */
+.chk-intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:end;margin-bottom:36px}
+.chk-intro h2{margin-top:14px}
+.chk-intro p{color:#3d3d3d}
+.chk-box label{display:block;margin-bottom:12px}
+.chk-box textarea{display:block;width:100%;min-height:170px;resize:vertical;padding:18px 20px;border:1px solid var(--line);border-radius:0;background:var(--white);color:var(--ink);font-family:var(--sans);font-size:13px;font-weight:300;line-height:1.7;transition:border-color .3s}
+.chk-box textarea:focus{outline:none;border-color:var(--ink)}
+.chk-box textarea::placeholder{color:#a3a3a0}
+.chk-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.chk-actions .btn{cursor:pointer;font-family:var(--sans)}
+.chk-result{margin-top:36px}
+.chk-result[hidden]{display:none}
+.chk-verdict{font-family:var(--serif);font-size:clamp(26px,3vw,36px);line-height:1.2;margin-bottom:8px}
+.chk-sub{color:#474747;font-size:13.5px;margin-bottom:22px}
+.chk-flags{list-style:none;border-top:1px solid var(--line);margin-bottom:28px}
+.chk-flags li{display:flex;justify-content:space-between;gap:8px 24px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line)}
+.chk-flags .nm{font-size:14px;color:var(--ink)}
+.chk-flags .why{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+.chk-all{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+.chk-all span{font-size:11.5px;line-height:1.4;padding:6px 10px;border:1px solid var(--line);color:#474747}
+.chk-all span.bad{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.chk-note{font-size:12px;color:var(--grey);max-width:72ch}
+.chk-note a{color:inherit;border-bottom:1px solid currentColor;padding-bottom:1px;transition:color .3s}
+.chk-note a:hover{color:var(--ink)}
+@media (max-width:860px){.chk-intro{grid-template-columns:1fr;gap:16px}}
+
+.chk-flags li{display:block;padding:20px 0}
+.chk-flags .top{display:flex;justify-content:space-between;align-items:baseline;gap:6px 24px;flex-wrap:wrap}
+.chk-flags .nm{font-family:var(--serif);font-size:clamp(20px,2vw,24px);font-weight:400;line-height:1.3}
+.chk-flags .why{display:block;margin-top:4px}
+.chk-flags .rate{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);white-space:nowrap}
+.chk-flags .dots{letter-spacing:.12em;color:var(--ink);margin-left:8px;font-size:12px}
+.chk-flags .expl{margin-top:10px;color:#3d3d3d;font-size:13.5px;max-width:72ch}
+.chk-scale{margin-top:56px;padding-top:36px;border-top:1px solid var(--line)}
+.chk-scale h2{font-size:clamp(28px,3vw,38px);margin:14px 0 18px}
+.chk-scale p{color:#3d3d3d;font-size:13.5px;margin-bottom:14px;max-width:72ch}
+.chk-scale ol{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:0 40px;max-width:820px;margin:8px 0 18px;font-size:13px;color:#3d3d3d}
+.chk-scale li{padding:8px 0;border-bottom:1px solid var(--line)}
+.chk-scale li b{font-weight:400;color:var(--ink);margin-right:10px}
+
+/* Footer */
+footer{background:var(--ink);color:var(--white);padding:clamp(56px,7vw,84px) 0 30px;font-size:14px}
+.foot-cta{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:48px;border-bottom:1px solid #333;margin-bottom:44px}
+.foot-cta h2{font-size:clamp(34px,4.4vw,54px)}
+.foot-cta .btn{background:var(--white);color:var(--ink);border-color:var(--white)}
+.foot-cta .btn:hover{background:transparent;color:var(--white)}
+.foot{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.foot h4{font-family:var(--sans);font-weight:400;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#888;margin-bottom:14px}
+.foot ul{list-style:none}.foot li{margin-bottom:6px;color:#ddd}
+.foot a:hover{opacity:.6}
+.legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:56px;font-size:11px;letter-spacing:.12em;color:#777}
+
+.book-bar{display:none}
+
+/* Responsive */
+@media (max-width:860px){
+  .nav ul li.hide-m{display:none}
+  .nav ul{gap:0}
+  .foot{grid-template-columns:1fr 1fr}
+  .chk-scale ol{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wordmark{font-size:13px}
+  .nav .btn{padding:10px 14px;font-size:10px;letter-spacing:.14em}
+  .nav .btn .arrow{display:none}
+  .foot{grid-template-columns:1fr}
+  .chk-scale ol{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body id="top">
+
+<header>
+  <nav class="wrap nav" aria-label="Main">
+    <a href="/" class="wordmark">Flora Skin Wellness</a>
+    <ul>
+      <li class="hide-m"><a href="/#services">Services</a></li>
+      <li class="hide-m"><a href="/#about">About</a></li>
+      <li class="hide-m"><a href="/#faq">FAQ</a></li>
+      <li><a href="#" class="btn" data-book>Book Now <span class="arrow"></span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<section class="sec chk-page" id="ingredient-checker">
+  <div class="wrap">
+    <div class="chk-intro">
+      <div>
+        <div class="eyebrow">Ingredient Checker</div>
+        <h1>Is it <em>pore-clogging</em>?</h1>
+      </div>
+      <p>Paste the ingredient list from any skincare, makeup or hair product and see if it contains ingredients known to clog pores. For each one we find, you'll see why it can cause congestion and its comedogenic rating.</p>
+    </div>
+    <form class="chk-box" id="chk-form" novalidate>
+      <label class="eyebrow" for="chk-input">Ingredient list</label>
+      <textarea id="chk-input" spellcheck="false" placeholder="Water, Glycerin, Isopropyl Myristate, Cetyl Alcohol, ..."></textarea>
+      <div class="chk-actions">
+        <button type="submit" class="btn">Check Ingredients <span class="arrow"></span></button>
+        <button type="button" class="btn ghost" id="chk-clear">Clear</button>
+      </div>
+    </form>
+    <div class="chk-result" id="chk-result" aria-live="polite" hidden></div>
+
+    <div class="chk-scale">
+      <div class="eyebrow">About the ratings</div>
+      <h2>The comedogenic <em>scale</em>.</h2>
+      <p>Comedogenic means likely to clog pores. Ingredients are rated from 0 to 5 based on how often they caused clogged pores in lab testing:</p>
+      <ol>
+        <li><b>0</b>Won't clog pores</li>
+        <li><b>1</b>Very low</li>
+        <li><b>2</b>Moderately low</li>
+        <li><b>3</b>Moderate</li>
+        <li><b>4</b>Fairly high</li>
+        <li><b>5</b>High</li>
+      </ol>
+      <p>Not every ingredient has been lab-tested. Ingredients marked "Not lab-rated" are flagged because acne experts regularly see them cause breakouts in acne-prone skin. A rating depends on how much of an ingredient is in a formula, so treat it as a guide rather than a guarantee.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-cta">
+      <h2>Ready when <em>you</em> are.</h2>
+      <a href="#" class="btn" data-book>Book Your Appointment <span class="arrow"></span></a>
+    </div>
+    <div class="foot">
+      <div>
+        <h4>Visit</h4>
+        <ul><li><a href="https://www.google.com/maps/search/?api=1&query=8921%20E%20Alki%20Ave%2C%20Spokane%20Valley%2C%20WA%2C%2099212" target="_blank" rel="noopener">8921 E Alki Ave<br>Spokane Valley, WA 99212</a></li></ul>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul><li>Mon – Wed · 9:30 – 5</li><li>Select Thursdays</li><li>Fri – Sun · Closed</li></ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul><li><a href="#" data-book>Book Online</a></li><li><a href="#" data-gift>Gift Cards</a></li><li><a href="#" data-ig>Instagram</a></li><li><a href="mailto:floraskinwellness@gmail.com">floraskinwellness@gmail.com</a></li></ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span><span class="wordmark" style="font-size:16px;color:#ddd">Flora Skin Wellness</span> &nbsp;© <span id="yr"></span></span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== Links ===== */
+const BOOKING_URL   = "https://floraskinwellness.glossgenius.com/services";
+const INSTAGRAM_URL = "https://www.instagram.com/floraskinwellness/";
+const GIFT_CARD_URL = "https://floraskinwellness.glossgenius.com/shop/gift-cards";
+
+const setLinks = (sel, url) => document.querySelectorAll(sel).forEach(a => {
+  a.href = url; a.target = "_blank"; a.rel = "noopener";
+});
+setLinks("[data-book]", BOOKING_URL);
+setLinks("[data-ig]", INSTAGRAM_URL);
+setLinks("[data-gift]", GIFT_CARD_URL);
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* ===== Pore-clogging ingredients =====
+   [display name, comedogenic rating 0-5 (null = not lab-rated), reason (a key
+   in WHY below), ...spellings to match]. Matching ignores case, punctuation
+   and hyphens, and looks for whole words, so "Laureth-4" won't match "Laureth-40". */
+const PORE_CLOGGERS = [
+  ["Acai Oil", null, "oil", "acai oil", "euterpe oleracea fruit oil", "euterpe oleracea oil"],
+  ["Acetylated Lanolin", 4, "lanolin_mod", "acetylated lanolin"],
+  ["Acetylated Lanolin Alcohol", 4, "lanolin_mod", "acetylated lanolin alcohol"],
+  ["Agar", null, "algae", "agar"],
+  ["Algae Extract", 5, "algae", "algae", "alga"],
+  ["Algin", 4, "algae", "algin"],
+  ["Almond Oil", 2, "oil", "almond oil", "sweet almond oil", "prunus amygdalus dulcis oil", "prunus amygdalus dulcis sweet almond oil", "prunus dulcis oil"],
+  ["Apricot Kernel Oil", 2, "oil", "apricot kernel oil", "apricot oil", "prunus armeniaca kernel oil", "prunus armeniaca apricot kernel oil"],
+  ["Arachidic Acid", null, "fatty_acid", "arachidic acid"],
+  ["Ascorbyl Palmitate", 2, "ascorbyl", "ascorbyl palmitate"],
+  ["Avocado Oil", 3, "oil", "avocado oil", "persea gratissima oil", "persea gratissima avocado oil", "persea americana oil", "persea americana avocado oil"],
+  ["Babassu Oil", null, "oil", "babassu oil", "orbignya oleifera seed oil", "orbignya oleifera babassu seed oil"],
+  ["Baobab Oil", null, "oil", "baobab oil", "adansonia digitata seed oil", "adansonia digitata oil"],
+  ["Benzaldehyde", null, "irritant", "benzaldehyde"],
+  ["Black Walnut Extract", null, "walnut", "black walnut", "juglans nigra"],
+  ["Bladderwrack", null, "algae", "bladderwrack", "fucus vesiculosus"],
+  ["Borage Seed Oil", null, "oil", "borage oil", "borage seed oil", "borago officinalis seed oil"],
+  ["Butyl Stearate", 3, "ester", "butyl stearate"],
+  ["Butylated Hydroxyanisole", null, "irritant", "butylated hydroxyanisole"],
+  ["Carmine", null, "color", "carmine", "ci 75470"],
+  ["Carrageenan", 5, "algae", "carrageenan", "carrageenans"],
+  ["Carrot Seed Oil", 4, "oil", "carrot seed oil", "daucus carota sativa seed oil", "daucus carota seed oil"],
+  ["Cetyl Acetate", 4, "ester", "cetyl acetate"],
+  ["Chlorella", null, "algae", "chlorella"],
+  ["Chondrus Crispus (Irish Moss)", 5, "algae", "chondrus crispus", "irish moss", "sea moss"],
+  ["Coal Tar", null, "irritant", "coal tar"],
+  ["Cocoa Butter", 4, "butter", "cocoa butter", "theobroma cacao seed butter", "theobroma cacao cocoa seed butter"],
+  ["Coconut Acid", null, "fatty_acid", "coconut acid"],
+  ["Coconut Alkanes", null, "coconut", "coconut alkanes"],
+  ["Coconut Butter", 4, "butter", "coconut butter"],
+  ["Coconut Oil", 4, "coconut", "coconut oil", "cocos nucifera oil", "cocos nucifera coconut oil"],
+  ["Corn Oil", 3, "oil", "corn oil", "zea mays germ oil", "zea mays corn germ oil", "zea mays oil", "zea mays corn oil"],
+  ["Cotton Awws Oil", 3, "oil", "cotton awws oil"],
+  ["Cotton Seed Oil", 3, "oil", "cotton seed oil", "cottonseed oil", "gossypium herbaceum seed oil", "gossypium herbaceum cotton seed oil"],
+  ["Cupuacu Butter", null, "butter", "cupuacu butter", "theobroma grandiflorum seed butter"],
+  ["D&C Red 17", 3, "color", "d c red 17", "d c red no 17", "red 17", "ci 26100"],
+  ["D&C Red 21", 2, "color", "d c red 21", "d c red no 21", "red 21", "ci 45380"],
+  ["D&C Red 3", 3, "color", "d c red 3", "d c red no 3", "red 3", "ci 45430"],
+  ["D&C Red 30", 3, "color", "d c red 30", "d c red no 30", "red 30", "ci 73360"],
+  ["D&C Red 36", 3, "color", "d c red 36", "d c red no 36", "red 36", "ci 12085"],
+  ["Decyl Oleate", 3, "ester", "decyl oleate"],
+  ["Dioctyl Succinate", 3, "ester", "dioctyl succinate", "diethylhexyl succinate"],
+  ["Disodium Monooleamido PEG-2 Sulfosuccinate", 4, "surfactant", "disodium monooleamido peg 2 sulfosuccinate"],
+  ["Emu Oil", null, "oil", "emu oil"],
+  ["Ethoxylated Lanolin", null, "lanolin_mod", "ethoxylated lanolin"],
+  ["Ethylhexyl Palmitate", 4, "ester", "ethylhexyl palmitate", "octyl palmitate"],
+  ["Evening Primrose Oil", 3, "oil", "evening primrose oil", "oenothera biennis oil", "oenothera biennis evening primrose oil", "oenothera biennis seed oil"],
+  ["Flaxseed (Linseed) Oil", 4, "oil", "flaxseed oil", "flax seed oil", "linseed oil", "linum usitatissimum seed oil", "linum usitatissimum linseed seed oil"],
+  ["Gelidiella (Red Algae)", null, "algae", "gelidiella acerosa"],
+  ["Gigartina (Red Algae)", null, "algae", "gigartina"],
+  ["Glyceryl Stearate SE", 3, "emulsifier", "glyceryl stearate se"],
+  ["Glyceryl-3 Diisostearate", 4, "ester", "glyceryl 3 diisostearate"],
+  ["Hexadecyl Alcohol", 5, "fatty_alcohol", "hexadecyl alcohol"],
+  ["Hydrogenated Vegetable Oil", 3, "oil", "hydrogenated vegetable oil"],
+  ["Hypnea (Red Algae)", null, "algae", "hypnea musciformis"],
+  ["Illipe Butter", null, "butter", "illipe butter", "shorea stenoptera seed butter"],
+  ["Isocetyl Alcohol", 4, "fatty_alcohol", "isocetyl alcohol"],
+  ["Isocetyl Stearate", 5, "ester", "isocetyl stearate"],
+  ["Isodecyl Oleate", 4, "ester", "isodecyl oleate"],
+  ["Isopropyl Isostearate", 5, "ester", "isopropyl isostearate"],
+  ["Isopropyl Linoleate", 5, "ester", "isopropyl linoleate", "isopropyl linolate"],
+  ["Isopropyl Myristate", 5, "ester", "isopropyl myristate"],
+  ["Isopropyl Palmitate", 4, "ester", "isopropyl palmitate"],
+  ["Isopropyl Stearate", null, "ester", "isopropyl stearate"],
+  ["Isostearyl Isostearate", 4, "ester", "isostearyl isostearate"],
+  ["Isostearyl Neopentanoate", 3, "ester", "isostearyl neopentanoate"],
+  ["Kelp", null, "algae", "kelp"],
+  ["Knotted Wrack (Seaweed)", null, "algae", "ascophyllum nodosum"],
+  ["Kokum Butter", null, "butter", "kokum butter", "garcinia indica seed butter"],
+  ["Laminaria (Seaweed)", null, "algae", "laminaria"],
+  ["Lanolin", 1, "lanolin", "lanolin", "lanolin oil", "lanolin wax", "hydrogenated lanolin", "lanolin alcohol", "lanolin acid", "isopropyl lanolate"],
+  ["Laureth-23", 3, "emulsifier", "laureth 23"],
+  ["Laureth-4", 5, "emulsifier", "laureth 4"],
+  ["Lauric Acid", 4, "fatty_acid", "lauric acid"],
+  ["Macadamia Oil", null, "oil", "macadamia oil", "macadamia nut oil", "macadamia seed oil", "macadamia integrifolia seed oil", "macadamia ternifolia seed oil"],
+  ["Mango Butter", null, "butter", "mango butter", "mango seed butter", "mangifera indica seed butter", "mangifera indica mango seed butter"],
+  ["Marula Oil", null, "oil", "marula oil", "sclerocarya birrea seed oil", "sclerocarya birrea oil"],
+  ["Mink Oil", 3, "animal_oil", "mink oil"],
+  ["Moringa Oil", null, "oil", "moringa oil", "moringa oleifera seed oil"],
+  ["Murumuru Butter", null, "butter", "murumuru butter", "astrocaryum murumuru seed butter"],
+  ["Myreth-3 Myristate", 4, "ester", "myreth 3 myristate"],
+  ["Myristic Acid", 3, "fatty_acid", "myristic acid"],
+  ["Myristyl Lactate", 4, "ester", "myristyl lactate"],
+  ["Myristyl Myristate", 5, "ester", "myristyl myristate"],
+  ["Nori (Seaweed)", null, "algae", "porphyra", "nori"],
+  ["Octyl Stearate", 5, "ester", "octyl stearate", "ethylhexyl stearate"],
+  ["Octyldodecyl Stearate", 3, "ester", "octyldodecyl stearate"],
+  ["Octyldodecyl Stearoyl Stearate", null, "ester", "octyldodecyl stearoyl stearate"],
+  ["Oleic Acid", null, "fatty_acid", "oleic acid"],
+  ["Oleth-10", 2, "emulsifier", "oleth 10"],
+  ["Oleth-3", 5, "emulsifier", "oleth 3"],
+  ["Oleyl Alcohol", 4, "fatty_alcohol", "oleyl alcohol"],
+  ["Olive Oil", 2, "oil", "olive oil", "olive fruit oil", "olea europaea oil", "olea europaea fruit oil", "olea europaea olive fruit oil", "olea europaea olive oil"],
+  ["Palm Oil", 4, "oil", "palm oil", "palm kernel oil", "elaeis guineensis oil", "elaeis guineensis palm oil", "elaeis guineensis kernel oil", "elaeis guineensis palm kernel oil"],
+  ["Peach Kernel Oil", 2, "oil", "peach kernel oil", "prunus persica kernel oil", "prunus persica peach kernel oil"],
+  ["Peanut Oil", 2, "oil", "peanut oil", "arachis hypogaea oil", "arachis hypogaea peanut oil"],
+  ["PEG-16 Lanolin", 4, "lanolin_mod", "peg 16 lanolin", "solulan 16"],
+  ["PEG-200 Dilaurate", 3, "emulsifier", "peg 200 dilaurate"],
+  ["PEG-8 Stearate", 3, "emulsifier", "peg 8 stearate"],
+  ["Plankton", null, "algae", "plankton"],
+  ["Polyglyceryl-3 Diisostearate", 4, "ester", "polyglyceryl 3 diisostearate"],
+  ["Potassium Chloride", 5, "salt", "potassium chloride"],
+  ["PPG-2 Myristyl Propionate", 4, "ester", "ppg 2 myristyl propionate", "ppg 2 myristyl ether propionate"],
+  ["Propylene Glycol Monostearate", 4, "emulsifier", "propylene glycol monostearate", "pg monostearate", "propylene glycol stearate"],
+  ["Pumpkin Seed Oil", null, "oil", "pumpkin seed oil", "cucurbita pepo seed oil", "cucurbita pepo pumpkin seed oil"],
+  ["Red Algae", 5, "algae", "red algae"],
+  ["Rice Bran Oil", null, "oil", "rice bran oil", "oryza sativa bran oil", "oryza sativa rice bran oil"],
+  ["Sal Butter", null, "butter", "sal butter", "shorea robusta seed butter"],
+  ["Sargassum (Seaweed)", null, "algae", "sargassum"],
+  ["Sea Lettuce (Seaweed)", null, "algae", "ulva lactuca"],
+  ["Sea Whip Extract", null, "algae", "sea whip", "pseudopterogorgia elisabethae"],
+  ["Seaweed", null, "algae", "seaweed"],
+  ["Sesame Oil", 3, "oil", "sesame oil", "sesame seed oil", "sesamum indicum seed oil", "sesamum indicum sesame seed oil", "sesamum indicum oil"],
+  ["Shark Liver Oil", 3, "animal_oil", "shark liver oil"],
+  ["Shea Butter", null, "shea", "shea butter", "shea oil", "shea olein", "butyrospermum parkii", "butyrospermium parkii", "vitellaria paradoxa"],
+  ["Sodium Chloride (Salt)", 5, "salt", "sodium chloride", "sea salt", "maris sal"],
+  ["Sodium Laureth Sulfate", null, "sulfate", "sodium laureth sulfate"],
+  ["Sodium Lauryl Sulfate", 5, "sulfate", "sodium lauryl sulfate"],
+  ["Sorbitan Oleate", 3, "emulsifier", "sorbitan oleate"],
+  ["Sorbitan Sesquioleate", null, "emulsifier", "sorbitan sesquioleate"],
+  ["Soybean Oil", 3, "oil", "soybean oil", "glycine soja oil", "glycine soja soybean oil"],
+  ["Spirulina", null, "algae", "spirulina"],
+  ["Steareth-10", 4, "emulsifier", "steareth 10"],
+  ["Steareth-2", 2, "emulsifier", "steareth 2"],
+  ["Stearic Acid TEA", 3, "emulsifier", "stearic acid tea", "tea stearate"],
+  ["Stearyl Heptanoate", 4, "ester", "stearyl heptanoate"],
+  ["Sulfated Castor Oil", 3, "sulfated", "sulfated castor oil"],
+  ["Sulfated Jojoba Oil", 3, "sulfated", "sulfated jojoba oil"],
+  ["Tamanu Oil", null, "oil", "tamanu oil", "calophyllum inophyllum seed oil", "calophyllum inophyllum oil"],
+  ["Tridecyl Neopentanoate", null, "ester", "tridecyl neopentanoate"],
+  ["Wakame (Seaweed)", null, "algae", "wakame", "undaria pinnatifida"],
+  ["Wheat Germ Glyceride", null, "wheat", "wheat germ glyceride", "wheat germ glycerides"],
+  ["Wheat Germ Oil", 5, "wheat", "wheat germ oil", "triticum vulgare germ oil", "triticum vulgare wheat germ oil"],
+  ["Xylene", null, "irritant", "xylene"]
+];
+/* Only pore-clogging when both are in the same product: [name, rating, reason, a, b] */
+const PORE_CLOGGING_PAIRS = [
+  ["Cetearyl Alcohol + Ceteareth-20", 4, "pair", "cetearyl alcohol", "ceteareth 20"]
+];
+/* Why each kind of ingredient may clog pores */
+const WHY = {
+  oil: "A rich plant oil. Heavier oils, especially those high in oleic acid, can settle into the pore and mix with your own oil and dead skin cells, which is how clogs start.",
+  butter: "A heavy, waxy butter. It forms a thick layer on the skin that can trap oil and dead skin cells inside the pore.",
+  shea: "Shea scores low in lab tests, but it's thick and occlusive, and acne experts often see it cause congestion on acne-prone skin, so it's best avoided if you break out easily.",
+  coconut: "Coconut oil and its derivatives are very rich in lauric and myristic acid, which are among the most pore-clogging fatty acids. It's one of the most common hidden acne triggers.",
+  algae: "Algae, seaweed and other marine extracts are naturally high in iodine, which can irritate the pore lining and trigger breakouts in acne-prone skin. Many also leave a film on the skin.",
+  ester: "A synthetic fatty ester used to give products a silky, smooth feel. It slips easily into the pore, where it can thicken the oil inside and lead to clogs.",
+  fatty_acid: "A fatty acid that can disrupt the pore lining and has been shown to encourage clogged pores, especially in leave-on products.",
+  fatty_alcohol: "A heavy fatty alcohol that tested comedogenic. Unlike lighter fatty alcohols such as cetyl alcohol, it can build up inside the pore.",
+  emulsifier: "An emulsifier that helps oil and water mix. Some emulsifiers irritate the pore lining, and that irritation makes the pore more likely to clog.",
+  surfactant: "A cleansing agent that can irritate the pore lining, making clogs more likely.",
+  sulfate: "A harsh foaming cleanser. It can strip and irritate the skin, and irritation of the pore lining leads to congestion and breakouts.",
+  salt: "Salts can irritate the lining of the pore. Acne-prone skin reacts strongly to this, especially with daily use in cleansers and body washes.",
+  color: "Some red pigments, especially coal-tar based D&C reds and carmine, have tested comedogenic. Look out for them in blush, lipstick and tinted products.",
+  lanolin: "A rich, waxy moisturizer from sheep's wool. Pure lanolin scores low, but its heavy texture and its many modified forms can congest acne-prone skin.",
+  lanolin_mod: "A modified form of lanolin (the wax from sheep's wool). These forms soak into the pore more easily than plain lanolin and tested highly comedogenic.",
+  animal_oil: "A heavy animal oil that sits on the skin and can collect inside pores.",
+  sulfated: "An oil treated with sulfuric acid so it mixes with water. The processing makes it more irritating to the pore than the plain oil.",
+  wheat: "Wheat germ oil and its derivatives are very rich and heavy, and wheat germ oil is one of the highest-rated pore cloggers in testing.",
+  ascorbyl: "A form of vitamin C bound to palmitic acid, a fatty acid. That fatty part is what makes it mildly pore-clogging.",
+  walnut: "A plant extract that acne experts flag as a breakout trigger for acne-prone skin.",
+  irritant: "An irritating ingredient. Irritation of the pore lining makes it shed unevenly, which leads to clogged pores.",
+  pair: "Cetearyl alcohol and ceteareth-20 together make an emulsifying wax that tested highly comedogenic. On their own, each one is generally fine."
+};
+
+(() => {
+  const form = document.getElementById("chk-form");
+  if (!form) return;
+  const input = document.getElementById("chk-input");
+  const out = document.getElementById("chk-result");
+
+  const norm = s => " " + s.toLowerCase().replace(/&/g, " ").replace(/[^a-z0-9]+/g, " ").trim() + " ";
+  const has = (n, term) => n.includes(" " + term + " ");
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  /* Split on commas, semicolons, bullets and new lines, but not inside (parentheses) */
+  const split = text => {
+    const parts = []; let cur = "", depth = 0;
+    for (const ch of text.replace(/^\s*(full\s+)?ingredients?\s*:/i, "")) {
+      if (ch === "(" || ch === "[") depth++;
+      if ((ch === ")" || ch === "]") && depth) depth--;
+      if (!depth && /[,;\n\r•·|]/.test(ch)) { parts.push(cur); cur = ""; } else cur += ch;
+    }
+    parts.push(cur);
+    return parts.map(p => p.replace(/\s+/g, " ").replace(/^[\s.*]+|[\s.*]+$/g, "")).filter(Boolean);
+  };
+
+  const rateText = r => r === null
+    ? "Not lab-rated"
+    : `Comedogenic rating ${r}/5<span class="dots" aria-hidden="true">${"●".repeat(r)}${"○".repeat(5 - r)}</span>`;
+  const row = f => `<li>
+      <div class="top">
+        <div><span class="nm">${esc(f.found)}</span>${norm(f.found) === norm(f.name) ? "" : `<span class="why">${esc(f.name)}</span>`}</div>
+        <span class="rate">${rateText(f.rating)}</span>
+      </div>
+      <p class="expl">${esc(WHY[f.why] || "")}</p>
+    </li>`;
+
+  const check = () => {
+    const items = split(input.value);
+    if (!items.length) { out.hidden = true; out.innerHTML = ""; input.focus(); return; }
+    const normed = items.map(norm);
+    const bad = new Set(), flags = [];
+
+    PORE_CLOGGERS.forEach(([name, rating, why, ...terms]) => {
+      normed.forEach((n, i) => {
+        if (terms.some(t => has(n, t))) { bad.add(i); flags.push({ name, rating, why, found: items[i], at: i }); }
+      });
+    });
+    PORE_CLOGGING_PAIRS.forEach(([name, rating, why, a, b]) => {
+      const ia = normed.findIndex(n => has(n, a)), ib = normed.findIndex(n => has(n, b));
+      if (ia > -1 && ib > -1) { bad.add(ia); bad.add(ib); flags.push({ name, rating, why, found: items[ia] + " + " + items[ib], at: Math.min(ia, ib) }); }
+    });
+
+    /* One row per pasted ingredient, in the order they were pasted */
+    const rows = [], seen = new Set();
+    flags.sort((a, b) => a.at - b.at || b.name.length - a.name.length).forEach(f => { if (!seen.has(f.found)) { seen.add(f.found); rows.push(f); } });
+
+    const count = rows.length;
+    out.innerHTML = (count
+      ? `<div class="chk-verdict">We found <em>${count}</em> pore-clogging ingredient${count === 1 ? "" : "s"}.</div>
+         <p class="chk-sub">Out of ${items.length} ingredient${items.length === 1 ? "" : "s"} checked. If you're acne-prone, this product may not be the best fit.</p>
+         <ul class="chk-flags">${rows.map(row).join("")}</ul>`
+      : `<div class="chk-verdict">No pore-clogging ingredients <em>found</em>.</div>
+         <p class="chk-sub">Out of ${items.length} ingredient${items.length === 1 ? "" : "s"} checked.</p>`)
+      + `<div class="eyebrow" style="margin-bottom:12px">Your ingredients</div>
+         <div class="chk-all">${items.map((it, i) => `<span${bad.has(i) ? ' class="bad"' : ""}>${esc(it)}</span>`).join("")}</div>
+         <p class="chk-note">This checker is a guide, not a diagnosis. Every skin is different, and a product's formula, strength and how you use it all matter. Not sure about your routine? <a href="${BOOKING_URL}" target="_blank" rel="noopener">Book a Skin Consultation</a> and Jules will go through your products with you.</p>`;
+    out.hidden = false;
+  };
+
+  form.addEventListener("submit", e => { e.preventDefault(); check(); });
+  input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); check(); } });
+  document.getElementById("chk-clear").addEventListener("click", () => { input.value = ""; out.hidden = true; out.innerHTML = ""; input.focus(); });
+})();
+</script>
+</body>
+</html>
